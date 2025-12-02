@@ -48,7 +48,16 @@
     <!-- Main App -->
     <div id="appContainer" style="display: none">
       <nav class="sidebar">
-        <div class="logo">📂 DocKeeper</div>
+        <!-- Logo & Mobile Logout Row -->
+        <div class="sidebar-header">
+          <div class="logo">📂 DocKeeper</div>
+          <!-- Mobile Logout Icon (Logo ညာဘက်တွင်ပေါ်မည်) -->
+          <button onclick="logout()" class="mobile-logout-icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+
+        <!-- Navigation Links -->
         <ul class="nav-links">
           <li onclick="filterCategory('all')" class="active" id="nav-all">
             <i class="fas fa-th-large"></i> All Files
@@ -75,14 +84,13 @@
             <i class="fas fa-folder-open"></i> Other
           </li>
 
-          <!-- New Help Button -->
-          <li
-            onclick="openHelpModal()"
-            style="margin-top: 20px; color: #4f46e5"
-          >
+          <!-- Help Button (Class added for alignment) -->
+          <li onclick="openHelpModal()" class="nav-help">
             <i class="fas fa-question-circle"></i> How to Use
           </li>
         </ul>
+
+        <!-- Desktop Profile (Hidden on Mobile) -->
         <div class="user-profile">
           <img id="userPhoto" src="" alt="User" />
           <div class="user-info">

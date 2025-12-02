@@ -64,12 +64,75 @@ header { display: flex; justify-content: space-between; align-items: center; mar
 .btn-save { background: var(--primary); color: white; padding: 10px 20px; border:none; border-radius:6px; cursor:pointer;}
 .btn-cancel { background: #e5e7eb; padding: 10px 20px; border:none; border-radius:6px; cursor:pointer;}
 
+/* Help Button Style (Desktop) */
+.nav-help {
+    margin-top: 20px; /* Desktop မှာ အောက်ချမယ် */
+    color: #4F46E5 !important;
+}
+
+/* Mobile Logout Icon (Default Hidden) */
+.mobile-logout-icon {
+    display: none;
+    background: none; border: none;
+    color: #ff6b6b; font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Desktop မှာ ဒီခလုတ်ကို ဖျောက်ထားမယ် (အောက်က Profile မှာ ပါပြီးသားမို့လို့) */
+.mobile-logout {
+    display: none;
+}
+
 @media (max-width: 768px) {
     #appContainer { flex-direction: column; }
-    .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ddd; overflow-x: auto; }
-    .nav-links { display: flex; padding: 10px; }
-    .nav-links li { white-space: nowrap; }
+
+    /* Sidebar Container */
+    .sidebar { 
+        width: 100%; height: auto; 
+        border-right: none; border-bottom: 1px solid #ddd; 
+        overflow: hidden; /* Scroll ကို nav-links မှာပဲ ပေးမယ် */
+    }
+
+    /* Logo & Logout Row */
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between; /* ဘယ်ညာခွဲမည် */
+        align-items: center;
+        padding-right: 20px; /* Logout button space */
+    }
+    
+    .logo { border-bottom: none; padding: 15px 20px; }
+    
+    /* Show Logout Icon on Mobile */
+    .mobile-logout-icon { display: block; }
+
+    /* Nav Links (Horizontal Scroll) */
+    .nav-links { 
+        display: flex; 
+        padding: 5px 15px 10px 15px; 
+        overflow-x: auto; /* ဘေးတိုက် Scroll ဆွဲလို့ရအောင် */
+        white-space: nowrap; /* စာကြောင်းမကျိုးအောင် */
+        gap: 5px; /* ခလုတ်တွေကြား ခွာမယ် */
+    }
+
+    .nav-links li { 
+        margin-bottom: 0; 
+        display: flex; align-items: center;
+        padding: 8px 12px;
+        background: #fff; border: 1px solid #eee; /* ခလုတ်ပုံစံဖြစ်အောင် */
+    }
+    
+    .nav-links li.active {
+        background: #EEF2FF; border-color: #4F46E5;
+    }
+
+    /* Help Button Alignment Fix */
+    .nav-help {
+        margin-top: 0; /* Mobile မှာ Margin ဖျောက်လိုက်မယ် (တတန်းတည်းညီသွားမယ်) */
+    }
+
     .user-profile { display: none; }
+    .main-content { padding: 15px; }
 }
 
 /* --- SEARCH BAR STYLES --- */
