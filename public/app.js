@@ -39,17 +39,40 @@ function signIn() {
 }
 function logout() { auth.signOut(); location.reload(); }
 
+// --- AUTH STATE LISTENER (MODIFIED FOR WHITELIST) ---
 auth.onAuthStateChanged(user => {
     if (user) {
-        currentUser = user;
-        document.getElementById('loginScreen').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'flex';
-        document.getElementById('userPhoto').src = user.photoURL;
-        document.getElementById('userName').textContent = user.displayName;
-        loadDocuments();
+        // Login ဝင်လာရင် Whitelist ထဲမှာ ရှိမရှိ အရင်စစ်မယ်
+        const userEmail = user.email; // Google Login Email
+        
+        db.collection('whitelist').doc(userEmail).get()
+        .then((doc) => {
+            if (doc.exists) {
+                // ရှိတယ်ဆိုမှ App ကို ပေးသုံးမယ်
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('appContainer').style.display = 'flex';
+                document.getElementById('userPhoto').src = user.photoURL;
+                document.getElementById('userName').textContent = user.displayName;
+                loadDocuments();
+            } else {
+                // မရှိရင် ပြန်ကန်ထုတ်မယ်
+                alert("Access Denied!\nAdmin ခွင့်ပြုချက်မရသေးပါ။\n(Email: " + userEmail + ")");
+                auth.signOut();
+            }
+        })
+        .catch((error) => {
+            console.error("Error checking whitelist:", error);
+            // Rule ကြောင့် error တက်ရင်လည်း ပိတ်ပင်မယ်
+            alert("Access Denied! (Permission Error)");
+            auth.signOut();
+        });
+
     } else {
+        // Logout ဖြစ်သွားရင် Login screen ပြမယ်
         document.getElementById('loginScreen').style.display = 'flex';
         document.getElementById('appContainer').style.display = 'none';
+        currentUser = null;
     }
 });
 
@@ -74,6 +97,47 @@ function exitFolder() {
     currentFolder = null;
     renderView();
 }
+
+// --- SEARCH LOGIC (NEW) ---
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    const term = e.target.value.toLowerCase().trim();
+    const grid = document.getElementById('fileGrid');
+    const folderStatus = document.getElementById('folderStatus');
+    const backBtn = document.getElementById('btnBack');
+
+    // 1. If search is empty, go back to normal view
+    if (!term) {
+        renderView(); 
+        return;
+    }
+
+    // 2. Hide Folder UI elements while searching
+    folderStatus.style.display = 'none';
+    backBtn.style.display = 'none';
+    grid.innerHTML = '';
+
+    // 3. Filter from ALL docs (Global Search)
+    // ရှာတဲ့အခါ Category မရွေးဘဲ အကုန်လုံးထဲက ရှာပေးပါမယ်
+    const results = allDocsCache.filter(doc => {
+        const titleMatch = doc.title.toLowerCase().includes(term);
+        const folderMatch = doc.folder && doc.folder.toLowerCase().includes(term);
+        const categoryMatch = doc.category.toLowerCase().includes(term);
+        return titleMatch || folderMatch || categoryMatch;
+    });
+
+    // 4. Render Results
+    if (results.length === 0) {
+        grid.innerHTML = `
+            <div style="text-align:center; width:100%; grid-column: 1 / -1; color:#888; margin-top:20px;">
+                <i class="fas fa-search" style="font-size:30px; margin-bottom:10px;"></i><br>
+                No documents found for "${term}"
+            </div>`;
+    } else {
+        results.forEach(doc => {
+            grid.appendChild(createFileCard(doc));
+        });
+    }
+});
 
 // --- HELP MODAL (NEW) ---
 function openHelpModal() {

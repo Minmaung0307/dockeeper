@@ -1,169 +1,263 @@
 <!DOCTYPE html>
 <html lang="my">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#4F46E5">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="DocKeeper">
-    
-    <title>DocKeeper Pro</title>
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965335.png">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#4F46E5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="DocKeeper" />
 
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <title>DocKeeper Pro</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json" />
+    <!-- <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965335.png"> -->
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-storage-compat.js"></script>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Login -->
     <div id="loginScreen" class="auth-container">
-        <div class="auth-box">
-            <h1>🔐 DocKeeper Pro</h1>
-            <p>သင့်စာရွက်စာတမ်းများကို Cloud တွင် သိမ်းပါ</p>
-            <button onclick="signIn()" class="btn-google"><i class="fab fa-google"></i> Login with Google</button>
-        </div>
+      <div class="auth-box">
+        <h1>🔐 DocKeeper Pro</h1>
+        <p>သင့်စာရွက်စာတမ်းများကို Cloud တွင် သိမ်းပါ</p>
+        <button onclick="signIn()" class="btn-google">
+          <i class="fab fa-google"></i> Login with Google
+        </button>
+      </div>
     </div>
 
     <!-- Main App -->
-    <div id="appContainer" style="display: none;">
-        <nav class="sidebar">
-            <div class="logo">📂 DocKeeper</div>
-            <ul class="nav-links">
-                <li onclick="filterCategory('all')" class="active" id="nav-all"><i class="fas fa-th-large"></i> All Files</li>
-                <li onclick="filterCategory('housing')" id="nav-housing"><i class="fas fa-home"></i> Housing</li>
-                <li onclick="filterCategory('travel')" id="nav-travel"><i class="fas fa-plane"></i> Travel</li>
-                <li onclick="filterCategory('id')" id="nav-id"><i class="fas fa-id-card"></i> ID / Legal</li>
-                <li onclick="filterCategory('tax')" id="nav-tax"><i class="fas fa-file-invoice-dollar"></i> Tax / W2</li>
-                <li onclick="filterCategory('medical')" id="nav-medical"><i class="fas fa-briefcase-medical"></i> Medical</li>
-                <li onclick="filterCategory('auto')" id="nav-auto"><i class="fas fa-car"></i> Auto / Car</li>
-                <li onclick="filterCategory('other')" id="nav-other"><i class="fas fa-folder-open"></i> Other</li>
-                
-                <!-- New Help Button -->
-                <li onclick="openHelpModal()" style="margin-top:20px; color:#4F46E5;"><i class="fas fa-question-circle"></i> How to Use</li>
-            </ul>
-            <div class="user-profile">
-                <img id="userPhoto" src="" alt="User">
-                <div class="user-info">
-                    <span id="userName">User</span>
-                    <small onclick="logout()" style="cursor:pointer; color:#ff6b6b;">Logout</small>
-                </div>
-            </div>
-        </nav>
+    <div id="appContainer" style="display: none">
+      <nav class="sidebar">
+        <div class="logo">📂 DocKeeper</div>
+        <ul class="nav-links">
+          <li onclick="filterCategory('all')" class="active" id="nav-all">
+            <i class="fas fa-th-large"></i> All Files
+          </li>
+          <li onclick="filterCategory('housing')" id="nav-housing">
+            <i class="fas fa-home"></i> Housing
+          </li>
+          <li onclick="filterCategory('travel')" id="nav-travel">
+            <i class="fas fa-plane"></i> Travel
+          </li>
+          <li onclick="filterCategory('id')" id="nav-id">
+            <i class="fas fa-id-card"></i> ID / Legal
+          </li>
+          <li onclick="filterCategory('tax')" id="nav-tax">
+            <i class="fas fa-file-invoice-dollar"></i> Tax / W2
+          </li>
+          <li onclick="filterCategory('medical')" id="nav-medical">
+            <i class="fas fa-briefcase-medical"></i> Medical
+          </li>
+          <li onclick="filterCategory('auto')" id="nav-auto">
+            <i class="fas fa-car"></i> Auto / Car
+          </li>
+          <li onclick="filterCategory('other')" id="nav-other">
+            <i class="fas fa-folder-open"></i> Other
+          </li>
 
-        <main class="main-content">
-            <header>
-                <div class="header-left">
-                    <button id="btnBack" onclick="exitFolder()" style="display:none;" class="btn-back">
-                        <i class="fas fa-arrow-left"></i> Back
-                    </button>
-                    <h2 id="pageTitle">All Documents</h2>
-                </div>
-                <button class="btn-add" onclick="openModal('add')"><i class="fas fa-plus"></i> Add New</button>
-            </header>
+          <!-- New Help Button -->
+          <li
+            onclick="openHelpModal()"
+            style="margin-top: 20px; color: #4f46e5"
+          >
+            <i class="fas fa-question-circle"></i> How to Use
+          </li>
+        </ul>
+        <div class="user-profile">
+          <img id="userPhoto" src="" alt="User" />
+          <div class="user-info">
+            <span id="userName">User</span>
+            <small onclick="logout()" style="cursor: pointer; color: #ff6b6b"
+              >Logout</small
+            >
+          </div>
+        </div>
+      </nav>
 
-            <div id="loading" class="loading-spinner" style="display: none;">
-                <i class="fas fa-spinner fa-spin"></i> Loading...
-            </div>
+      <main class="main-content">
+        <header>
+          <div class="header-left">
+            <button
+              id="btnBack"
+              onclick="exitFolder()"
+              style="display: none"
+              class="btn-back"
+            >
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <h2 id="pageTitle" class="hide-on-mobile">All Documents</h2>
+          </div>
 
-            <div id="folderStatus" style="margin-bottom:15px; color:#666; display:none;">
-                Category: <b id="catName"></b> > Folder: <b id="folderNameDisplay"></b>
-            </div>
+          <!-- SEARCH BOX (NEW) -->
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search title or folder..."
+            />
+          </div>
 
-            <div id="fileGrid" class="grid-container"></div>
-        </main>
+          <button class="btn-add" onclick="openModal('add')">
+            <i class="fas fa-plus"></i> <span class="hide-on-mobile">Add</span>
+          </button>
+        </header>
+
+        <div id="loading" class="loading-spinner" style="display: none">
+          <i class="fas fa-spinner fa-spin"></i> Loading...
+        </div>
+
+        <div
+          id="folderStatus"
+          style="margin-bottom: 15px; color: #666; display: none"
+        >
+          Category: <b id="catName"></b> > Folder:
+          <b id="folderNameDisplay"></b>
+        </div>
+
+        <div id="fileGrid" class="grid-container"></div>
+      </main>
     </div>
 
     <!-- Add/Edit Modal -->
     <div id="modalOverlay" class="modal-overlay">
-        <div class="modal-box">
-            <h3 id="modalTitle">Add New File</h3>
-            <input type="hidden" id="editDocId">
-            
-            <div class="form-group">
-                <label>Title</label>
-                <input type="text" id="docTitle" placeholder="e.g., Lease Agreement">
-            </div>
+      <div class="modal-box">
+        <h3 id="modalTitle">Add New File</h3>
+        <input type="hidden" id="editDocId" />
 
-            <div class="form-group">
-                <label>Category</label>
-                <select id="docCategory" onchange="updateFolderList()">
-                    <option value="housing">Housing (Rent/Buy)</option>
-                    <option value="travel">Travel</option>
-                    <option value="id">ID / Legal</option>
-                    <option value="tax">Tax</option>
-                    <option value="medical">Medical</option>
-                    <option value="auto">Auto</option>
-                    <option value="media">Media</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Folder (Optional)</label>
-                <input type="text" id="docFolder" list="folderSuggestions" placeholder="Create new or select...">
-                <datalist id="folderSuggestions"></datalist>
-            </div>
-
-            <div class="form-group" id="fileInputGroup">
-                <label>File</label>
-                <input type="file" id="docFile">
-            </div>
-
-            <div id="uploadProgress" style="display:none; margin-bottom:10px;">
-                <div style="background:#eee; height:5px; width:100%;">
-                    <div id="progressBar" style="background:#4F46E5; height:100%; width:0%;"></div>
-                </div>
-                <small>Uploading...</small>
-            </div>
-
-            <div class="modal-actions">
-                <button onclick="closeModal()" class="btn-cancel">Cancel</button>
-                <button onclick="saveDocument()" class="btn-save" id="btnSave">Save</button>
-            </div>
+        <div class="form-group">
+          <label>Title</label>
+          <input
+            type="text"
+            id="docTitle"
+            placeholder="e.g., Lease Agreement"
+          />
         </div>
+
+        <div class="form-group">
+          <label>Category</label>
+          <select id="docCategory" onchange="updateFolderList()">
+            <option value="housing">Housing (Rent/Buy)</option>
+            <option value="travel">Travel</option>
+            <option value="id">ID / Legal</option>
+            <option value="tax">Tax</option>
+            <option value="medical">Medical</option>
+            <option value="auto">Auto</option>
+            <option value="media">Media</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Folder (Optional)</label>
+          <input
+            type="text"
+            id="docFolder"
+            list="folderSuggestions"
+            placeholder="Create new or select..."
+          />
+          <datalist id="folderSuggestions"></datalist>
+        </div>
+
+        <div class="form-group" id="fileInputGroup">
+          <label>File</label>
+          <input type="file" id="docFile" />
+        </div>
+
+        <div id="uploadProgress" style="display: none; margin-bottom: 10px">
+          <div style="background: #eee; height: 5px; width: 100%">
+            <div
+              id="progressBar"
+              style="background: #4f46e5; height: 100%; width: 0%"
+            ></div>
+          </div>
+          <small>Uploading...</small>
+        </div>
+
+        <div class="modal-actions">
+          <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+          <button onclick="saveDocument()" class="btn-save" id="btnSave">
+            Save
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- Help Modal -->
     <div id="helpModal" class="modal-overlay">
-        <div class="modal-box" style="max-width: 500px;">
-            <h3>📖 အသုံးပြုပုံ လမ်းညွှန်</h3>
-            <div class="help-content" style="max-height: 400px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6;">
-                <p><strong>၁။ ဖုန်းထဲ Install လုပ်နည်း (App ကဲ့သို့သုံးရန်)</strong></p>
-                <ul>
-                    <li><b>Android (Chrome):</b> ညာဘက်အပေါ်ထောင့် (၃) ပွင့်ကိုနှိပ်ပါ > "Install app" သို့မဟုတ် "Add to Home screen" ကိုနှိပ်ပါ။</li>
-                    <li><b>iOS (Safari):</b> အောက်နားက Share ခလုတ်ကိုနှိပ်ပါ > အပေါ်ဆွဲတင်ပြီး "Add to Home Screen" ကိုနှိပ်ပါ။</li>
-                </ul>
-                <hr>
-                <p><strong>၂။ စာရွက်စာတမ်း သိမ်းဆည်းနည်း</strong></p>
-                <ul>
-                    <li>ညာဘက်အပေါ်က <b>"Add New"</b> ခလုတ်ကိုနှိပ်ပါ။</li>
-                    <li>ခေါင်းစဉ်၊ အမျိုးအစား (Category) ရွေးပါ။</li>
-                    <li><b>Folder:</b> ဖိုဒါခွဲသိမ်းချင်ရင် နာမည်ရိုက်ထည့်ပါ။ (ဥပမာ- Japan Trip, House 2025)။</li>
-                    <li>ဖိုင်ရွေးပြီး Save နှိပ်ပါ။</li>
-                </ul>
-                <hr>
-                <p><strong>၃။ ရှာဖွေခြင်းနှင့် ကြည့်ရှုခြင်း</strong></p>
-                <ul>
-                    <li>ဘယ်ဘက် Sidebar မှာ Category အလိုက်ရွေးကြည့်နိုင်ပါတယ်။</li>
-                    <li>အဝါရောင် Folder လေးတွေကိုနှိပ်ရင် အထဲကဖိုင်တွေ တွေ့ရပါမယ်။</li>
-                </ul>
-            </div>
-            <div class="modal-actions">
-                <button onclick="document.getElementById('helpModal').style.display='none'" class="btn-save">Close</button>
-            </div>
+      <div class="modal-box" style="max-width: 500px">
+        <h3>📖 အသုံးပြုပုံ လမ်းညွှန်</h3>
+        <div
+          class="help-content"
+          style="
+            max-height: 400px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.6;
+          "
+        >
+          <p>
+            <strong>၁။ ဖုန်းထဲ Install လုပ်နည်း (App ကဲ့သို့သုံးရန်)</strong>
+          </p>
+          <ul>
+            <li>
+              <b>Android (Chrome):</b> ညာဘက်အပေါ်ထောင့် (၃) ပွင့်ကိုနှိပ်ပါ >
+              "Install app" သို့မဟုတ် "Add to Home screen" ကိုနှိပ်ပါ။
+            </li>
+            <li>
+              <b>iOS (Safari):</b> အောက်နားက Share ခလုတ်ကိုနှိပ်ပါ >
+              အပေါ်ဆွဲတင်ပြီး "Add to Home Screen" ကိုနှိပ်ပါ။
+            </li>
+          </ul>
+          <hr />
+          <p><strong>၂။ စာရွက်စာတမ်း သိမ်းဆည်းနည်း</strong></p>
+          <ul>
+            <li>ညာဘက်အပေါ်က <b>"Add New"</b> ခလုတ်ကိုနှိပ်ပါ။</li>
+            <li>ခေါင်းစဉ်၊ အမျိုးအစား (Category) ရွေးပါ။</li>
+            <li>
+              <b>Folder:</b> ဖိုဒါခွဲသိမ်းချင်ရင် နာမည်ရိုက်ထည့်ပါ။ (ဥပမာ- Japan
+              Trip, House 2025)။
+            </li>
+            <li>ဖိုင်ရွေးပြီး Save နှိပ်ပါ။</li>
+          </ul>
+          <hr />
+          <p><strong>၃။ ရှာဖွေခြင်းနှင့် ကြည့်ရှုခြင်း</strong></p>
+          <ul>
+            <li>ဘယ်ဘက် Sidebar မှာ Category အလိုက်ရွေးကြည့်နိုင်ပါတယ်။</li>
+            <li>အဝါရောင် Folder လေးတွေကိုနှိပ်ရင် အထဲကဖိုင်တွေ တွေ့ရပါမယ်။</li>
+          </ul>
         </div>
+        <div class="modal-actions">
+          <button
+            onclick="document.getElementById('helpModal').style.display='none'"
+            class="btn-save"
+          >
+            Close
+          </button>
+        </div>
+      </div>
     </div>
 
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
