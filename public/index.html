@@ -2,8 +2,18 @@
 <html lang="my">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#4F46E5">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="DocKeeper">
+    
     <title>DocKeeper Pro</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965335.png">
+
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -19,14 +29,13 @@
     <div id="loginScreen" class="auth-container">
         <div class="auth-box">
             <h1>🔐 DocKeeper Pro</h1>
-            <p>Login to access your cloud documents</p>
+            <p>သင့်စာရွက်စာတမ်းများကို Cloud တွင် သိမ်းပါ</p>
             <button onclick="signIn()" class="btn-google"><i class="fab fa-google"></i> Login with Google</button>
         </div>
     </div>
 
     <!-- Main App -->
     <div id="appContainer" style="display: none;">
-        <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">📂 DocKeeper</div>
             <ul class="nav-links">
@@ -38,6 +47,9 @@
                 <li onclick="filterCategory('medical')" id="nav-medical"><i class="fas fa-briefcase-medical"></i> Medical</li>
                 <li onclick="filterCategory('auto')" id="nav-auto"><i class="fas fa-car"></i> Auto / Car</li>
                 <li onclick="filterCategory('other')" id="nav-other"><i class="fas fa-folder-open"></i> Other</li>
+                
+                <!-- New Help Button -->
+                <li onclick="openHelpModal()" style="margin-top:20px; color:#4F46E5;"><i class="fas fa-question-circle"></i> How to Use</li>
             </ul>
             <div class="user-profile">
                 <img id="userPhoto" src="" alt="User">
@@ -48,11 +60,9 @@
             </div>
         </nav>
 
-        <!-- Content -->
         <main class="main-content">
             <header>
                 <div class="header-left">
-                    <!-- Back Button for Folder View -->
                     <button id="btnBack" onclick="exitFolder()" style="display:none;" class="btn-back">
                         <i class="fas fa-arrow-left"></i> Back
                     </button>
@@ -65,7 +75,6 @@
                 <i class="fas fa-spinner fa-spin"></i> Loading...
             </div>
 
-            <!-- Breadcrumb for folder status -->
             <div id="folderStatus" style="margin-bottom:15px; color:#666; display:none;">
                 Category: <b id="catName"></b> > Folder: <b id="folderNameDisplay"></b>
             </div>
@@ -74,7 +83,7 @@
         </main>
     </div>
 
-    <!-- Modal -->
+    <!-- Add/Edit Modal -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modalTitle">Add New File</h3>
@@ -94,18 +103,15 @@
                     <option value="tax">Tax</option>
                     <option value="medical">Medical</option>
                     <option value="auto">Auto</option>
+                    <option value="media">Media</option>
                     <option value="other">Other</option>
                 </select>
             </div>
 
-            <!-- FOLDER INPUT -->
             <div class="form-group">
                 <label>Folder (Optional)</label>
                 <input type="text" id="docFolder" list="folderSuggestions" placeholder="Create new or select...">
-                <datalist id="folderSuggestions">
-                    <!-- Options populated by JS -->
-                </datalist>
-                <small style="color:#666; font-size:0.8em;">Type a new name to create a folder.</small>
+                <datalist id="folderSuggestions"></datalist>
             </div>
 
             <div class="form-group" id="fileInputGroup">
@@ -123,6 +129,37 @@
             <div class="modal-actions">
                 <button onclick="closeModal()" class="btn-cancel">Cancel</button>
                 <button onclick="saveDocument()" class="btn-save" id="btnSave">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal-overlay">
+        <div class="modal-box" style="max-width: 500px;">
+            <h3>📖 အသုံးပြုပုံ လမ်းညွှန်</h3>
+            <div class="help-content" style="max-height: 400px; overflow-y: auto; font-size: 0.9rem; line-height: 1.6;">
+                <p><strong>၁။ ဖုန်းထဲ Install လုပ်နည်း (App ကဲ့သို့သုံးရန်)</strong></p>
+                <ul>
+                    <li><b>Android (Chrome):</b> ညာဘက်အပေါ်ထောင့် (၃) ပွင့်ကိုနှိပ်ပါ > "Install app" သို့မဟုတ် "Add to Home screen" ကိုနှိပ်ပါ။</li>
+                    <li><b>iOS (Safari):</b> အောက်နားက Share ခလုတ်ကိုနှိပ်ပါ > အပေါ်ဆွဲတင်ပြီး "Add to Home Screen" ကိုနှိပ်ပါ။</li>
+                </ul>
+                <hr>
+                <p><strong>၂။ စာရွက်စာတမ်း သိမ်းဆည်းနည်း</strong></p>
+                <ul>
+                    <li>ညာဘက်အပေါ်က <b>"Add New"</b> ခလုတ်ကိုနှိပ်ပါ။</li>
+                    <li>ခေါင်းစဉ်၊ အမျိုးအစား (Category) ရွေးပါ။</li>
+                    <li><b>Folder:</b> ဖိုဒါခွဲသိမ်းချင်ရင် နာမည်ရိုက်ထည့်ပါ။ (ဥပမာ- Japan Trip, House 2025)။</li>
+                    <li>ဖိုင်ရွေးပြီး Save နှိပ်ပါ။</li>
+                </ul>
+                <hr>
+                <p><strong>၃။ ရှာဖွေခြင်းနှင့် ကြည့်ရှုခြင်း</strong></p>
+                <ul>
+                    <li>ဘယ်ဘက် Sidebar မှာ Category အလိုက်ရွေးကြည့်နိုင်ပါတယ်။</li>
+                    <li>အဝါရောင် Folder လေးတွေကိုနှိပ်ရင် အထဲကဖိုင်တွေ တွေ့ရပါမယ်။</li>
+                </ul>
+            </div>
+            <div class="modal-actions">
+                <button onclick="document.getElementById('helpModal').style.display='none'" class="btn-save">Close</button>
             </div>
         </div>
     </div>
