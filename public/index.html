@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocKeeper Pro</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Firebase SDKs -->
@@ -16,30 +15,28 @@
 </head>
 <body>
 
-    <!-- Login Screen -->
+    <!-- Login -->
     <div id="loginScreen" class="auth-container">
         <div class="auth-box">
             <h1>🔐 DocKeeper Pro</h1>
-            <p>စာရွက်စာတမ်းများကို Cloud တွင် လုံခြုံစွာသိမ်းပါ</p>
-            <button onclick="signIn()" class="btn-google">
-                <i class="fab fa-google"></i> Login with Google
-            </button>
+            <p>Login to access your cloud documents</p>
+            <button onclick="signIn()" class="btn-google"><i class="fab fa-google"></i> Login with Google</button>
         </div>
     </div>
 
-    <!-- Main App (Hidden by default) -->
+    <!-- Main App -->
     <div id="appContainer" style="display: none;">
-        
-        <!-- Sidebar Navigation -->
+        <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">📂 DocKeeper</div>
             <ul class="nav-links">
                 <li onclick="filterCategory('all')" class="active" id="nav-all"><i class="fas fa-th-large"></i> All Files</li>
+                <li onclick="filterCategory('housing')" id="nav-housing"><i class="fas fa-home"></i> Housing</li>
+                <li onclick="filterCategory('travel')" id="nav-travel"><i class="fas fa-plane"></i> Travel</li>
                 <li onclick="filterCategory('id')" id="nav-id"><i class="fas fa-id-card"></i> ID / Legal</li>
                 <li onclick="filterCategory('tax')" id="nav-tax"><i class="fas fa-file-invoice-dollar"></i> Tax / W2</li>
                 <li onclick="filterCategory('medical')" id="nav-medical"><i class="fas fa-briefcase-medical"></i> Medical</li>
                 <li onclick="filterCategory('auto')" id="nav-auto"><i class="fas fa-car"></i> Auto / Car</li>
-                <li onclick="filterCategory('media')" id="nav-media"><i class="fas fa-photo-video"></i> Media</li>
                 <li onclick="filterCategory('other')" id="nav-other"><i class="fas fa-folder-open"></i> Other</li>
             </ul>
             <div class="user-profile">
@@ -51,25 +48,33 @@
             </div>
         </nav>
 
-        <!-- Main Content -->
+        <!-- Content -->
         <main class="main-content">
             <header>
-                <h2 id="pageTitle">All Documents</h2>
+                <div class="header-left">
+                    <!-- Back Button for Folder View -->
+                    <button id="btnBack" onclick="exitFolder()" style="display:none;" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Back
+                    </button>
+                    <h2 id="pageTitle">All Documents</h2>
+                </div>
                 <button class="btn-add" onclick="openModal('add')"><i class="fas fa-plus"></i> Add New</button>
             </header>
 
-            <!-- Loading Spinner -->
             <div id="loading" class="loading-spinner" style="display: none;">
                 <i class="fas fa-spinner fa-spin"></i> Loading...
             </div>
 
-            <div id="fileGrid" class="grid-container">
-                <!-- Files will be injected here via JS -->
+            <!-- Breadcrumb for folder status -->
+            <div id="folderStatus" style="margin-bottom:15px; color:#666; display:none;">
+                Category: <b id="catName"></b> > Folder: <b id="folderNameDisplay"></b>
             </div>
+
+            <div id="fileGrid" class="grid-container"></div>
         </main>
     </div>
 
-    <!-- Add/Edit Modal -->
+    <!-- Modal -->
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal-box">
             <h3 id="modalTitle">Add New File</h3>
@@ -77,27 +82,37 @@
             
             <div class="form-group">
                 <label>Title</label>
-                <input type="text" id="docTitle" placeholder="e.g., 2025 Insurance">
+                <input type="text" id="docTitle" placeholder="e.g., Lease Agreement">
             </div>
 
             <div class="form-group">
                 <label>Category</label>
-                <select id="docCategory">
+                <select id="docCategory" onchange="updateFolderList()">
+                    <option value="housing">Housing (Rent/Buy)</option>
+                    <option value="travel">Travel</option>
                     <option value="id">ID / Legal</option>
                     <option value="tax">Tax</option>
                     <option value="medical">Medical</option>
                     <option value="auto">Auto</option>
-                    <option value="media">Photo/Video</option>
                     <option value="other">Other</option>
                 </select>
             </div>
 
+            <!-- FOLDER INPUT -->
+            <div class="form-group">
+                <label>Folder (Optional)</label>
+                <input type="text" id="docFolder" list="folderSuggestions" placeholder="Create new or select...">
+                <datalist id="folderSuggestions">
+                    <!-- Options populated by JS -->
+                </datalist>
+                <small style="color:#666; font-size:0.8em;">Type a new name to create a folder.</small>
+            </div>
+
             <div class="form-group" id="fileInputGroup">
-                <label>File (Photo, Video, PDF, Doc)</label>
+                <label>File</label>
                 <input type="file" id="docFile">
             </div>
 
-            <!-- Progress Bar -->
             <div id="uploadProgress" style="display:none; margin-bottom:10px;">
                 <div style="background:#eee; height:5px; width:100%;">
                     <div id="progressBar" style="background:#4F46E5; height:100%; width:0%;"></div>
