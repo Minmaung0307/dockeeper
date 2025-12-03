@@ -27,6 +27,14 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <!-- PDF.js Library (Add this in Head) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script>
+      // Set Worker for PDF.js
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    </script>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -65,6 +73,12 @@
           <li onclick="filterCategory('housing')" id="nav-housing">
             <i class="fas fa-home"></i> Housing
           </li>
+          <li onclick="filterCategory('business')" id="nav-business">
+            <i class="fas fa-briefcase"></i> Business
+          </li>
+          <li onclick="filterCategory('education')" id="nav-education">
+            <i class="fas fa-graduation-cap"></i> Education
+          </li>
           <li onclick="filterCategory('travel')" id="nav-travel">
             <i class="fas fa-plane"></i> Travel
           </li>
@@ -79,6 +93,9 @@
           </li>
           <li onclick="filterCategory('auto')" id="nav-auto">
             <i class="fas fa-car"></i> Auto / Car
+          </li>
+          <li onclick="filterCategory('media')" id="nav-media">
+            <i class="fas fa-photo-video"></i> Photo / Media
           </li>
           <li onclick="filterCategory('other')" id="nav-other">
             <i class="fas fa-folder-open"></i> Other
@@ -166,6 +183,8 @@
           <label>Category</label>
           <select id="docCategory" onchange="updateFolderList()">
             <option value="housing">Housing (Rent/Buy)</option>
+            <option value="business">Business / Work</option>
+            <option value="education">Education / School</option>
             <option value="travel">Travel</option>
             <option value="id">ID / Legal</option>
             <option value="tax">Tax</option>
@@ -188,8 +207,8 @@
         </div>
 
         <div class="form-group" id="fileInputGroup">
-          <label>File</label>
-          <input type="file" id="docFile" />
+          <label>File(s) - Select multiple files if needed</label>
+          <input type="file" id="docFile" multiple />
         </div>
 
         <div id="uploadProgress" style="display: none; margin-bottom: 10px">
@@ -262,6 +281,67 @@
           >
             Close
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW MODAL (Updated for PDF Scrolling) -->
+    <div id="viewModal" class="modal-overlay" style="z-index: 2000">
+      <div
+        class="modal-box"
+        style="
+          width: 95%;
+          max-width: 900px;
+          height: 95vh;
+          padding: 0;
+          background: #525659;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+        "
+      >
+        <!-- Header / Close -->
+        <div
+          style="
+            background: #333;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+          "
+        >
+          <span
+            id="viewTitle"
+            style="
+              font-size: 14px;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              max-width: 80%;
+            "
+            >Document Viewer</span
+          >
+          <button
+            onclick="closeViewModal()"
+            style="
+              background: none;
+              border: none;
+              color: white;
+              font-size: 24px;
+              cursor: pointer;
+            "
+          >
+            &times;
+          </button>
+        </div>
+
+        <!-- Content Container (Scrollable) -->
+        <div
+          id="viewContent"
+          style="flex: 1; overflow-y: auto; text-align: center; padding: 10px"
+        >
+          <!-- PDF Pages or Image will appear here -->
         </div>
       </div>
     </div>

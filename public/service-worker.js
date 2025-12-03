@@ -1,4 +1,7 @@
-const CACHE_NAME = 'dockeeper-v1';
+// v1 ဖြစ်နေတာကို v2 (သို့) v3 လို့ ပြောင်းလိုက်ပါ
+const CACHE_NAME = 'dockeeper-v3-fix'; 
+
+// အောက်က ကျန်တဲ့ကုဒ်တွေ အတူတူပါပဲ...
 const ASSETS = [
   './',
   './index.html',
@@ -7,7 +10,6 @@ const ASSETS = [
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
 
-// Install Service Worker
 self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -16,7 +18,6 @@ self.addEventListener('install', (e) => {
   );
 });
 
-// Activate & Cleanup Old Caches
 self.addEventListener('activate', (e) => {
   e.waitUntil(
     caches.keys().then((keys) => {
@@ -29,8 +30,6 @@ self.addEventListener('activate', (e) => {
   );
 });
 
-// Fetch Strategy (Cache First, falling back to Network)
-// Firebase calls will bypass this automatically via browser logic
 self.addEventListener('fetch', (e) => {
   e.respondWith(
     caches.match(e.request).then((res) => {
