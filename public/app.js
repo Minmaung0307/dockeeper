@@ -318,115 +318,154 @@ let currentPdfPage = 1;
 let currentPdfUrl = "";
 
 function viewFile(url, type, title) {
-  const modal = document.getElementById("viewModal");
-  const contentDiv = document.getElementById("viewContent");
-  const titleEl = document.getElementById("viewTitle");
+    const modal = document.getElementById('viewModal');
+    const contentDiv = document.getElementById('viewContent');
+    const titleEl = document.getElementById('viewTitle'); // Ensure this ID exists in HTML
 
-  // Reset
-  contentDiv.innerHTML = "";
-  titleEl.textContent = title || "Document Viewer";
-  modal.style.display = "flex";
-  currentPdfPage = 1;
-  currentPdfUrl = url;
+    // Reset
+    contentDiv.innerHTML = '';
+    // If you don't have viewTitle in HTML, remove the next line
+    if(document.getElementById('viewTitle')) document.getElementById('viewTitle').textContent = title || "Document Viewer";
+    
+    modal.style.display = 'flex';
+    
+    // Store global vars for pagination
+    currentPdfPage = 1;
+    currentPdfUrl = url;
 
-  // --- 1. IMAGE ---
-  if (type.startsWith("image/")) {
-    contentDiv.innerHTML = `<img src="${url}" style="max-width: 100%; height: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">`;
-    return;
-  }
-
-  // --- 2. PDF (Cloudinary Page-by-Page View) ---
-  if (type.includes("pdf")) {
-    // Cloudinary URL: .../upload/v12345/myfiles/doc.pdf
-    // Target URL: .../upload/pg_1/v12345/myfiles/doc.jpg
-
-    // 1. Check if it's a Cloudinary URL
-    if (!url.includes("cloudinary.com")) {
-      // Fallback for non-cloudinary
-      contentDiv.innerHTML = `<div style="color:white;padding:20px;"><a href="${url}" target="_blank" style="background:#4F46E5;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;">Download PDF</a></div>`;
-      return;
+    // --- 1. IMAGE ---
+    if (type.startsWith('image/')) {
+        contentDiv.innerHTML = `<img src="${url}" style="max-width: 100%; height: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">`;
+        return;
     }
 
-    renderPdfPage();
-    return;
-  }
+    // --- 2. PDF (Cloudinary Page-by-Page View) ---
+    if (type.includes('pdf')) {
+        // Check if it's Cloudinary
+        if (!url.includes('cloudinary.com')) {
+            // Fallback for non-cloudinary
+            contentDiv.innerHTML = `<div style="padding:20px; text-align:center;"><p>Preview not available for this PDF type.</p><button onclick="downloadFile('${url}')" style="background:#4F46E5; color:white; padding:10px; border:none; border-radius:5px;">Download PDF</button></div>`;
+            return;
+        }
 
-  // --- 3. VIDEO ---
-  if (type.startsWith("video/")) {
-    contentDiv.innerHTML = `
+        renderPdfPage();
+        return;
+    }
+
+    // --- 3. VIDEO ---
+    if (type.startsWith('video/')) {
+        contentDiv.innerHTML = `
             <video controls style="max-width: 100%; max-height: 100%;">
                 <source src="${url}" type="${type}">
                 Your browser does not support video.
             </video>`;
-    return;
-  }
+        return;
+    }
 
-  // --- 4. OTHER ---
-  contentDiv.innerHTML = `
-        <div style="color:white; padding:20px;">
+    // --- 4. OTHER ---
+    contentDiv.innerHTML = `
+        <div style="color:#333; padding:20px; text-align:center;">
             <i class="fas fa-file-download fa-3x"></i><br><br>
-            <a href="${url}" target="_blank" style="background:#4F46E5; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">
+            <button onclick="downloadFile('${url}', '${title.replace(/'/g, "\\'")}')" style="background:#4F46E5; color:white; padding:10px 20px; text-decoration:none; border:none; border-radius:5px; cursor:pointer;">
                 Download File
-            </a>
+            </button>
         </div>`;
 }
 
 // Helper to render PDF pages as Images
 function renderPdfPage() {
-  const contentDiv = document.getElementById("viewContent");
+    const contentDiv = document.getElementById('viewContent');
+    
+    // Construct Current Page URL
+    let pageUrl = currentPdfUrl;
+    if (pageUrl.includes('/upload/')) {
+        pageUrl = pageUrl.replace('/upload/', `/upload/pg_${currentPdfPage}/`);
+    }
+    if (pageUrl.toLowerCase().endsWith('.pdf')) {
+        pageUrl = pageUrl.substr(0, pageUrl.lastIndexOf(".")) + ".jpg";
+    }
 
-  // Construct URL for specific page (pg_X) and convert to JPG
-  // Replace /upload/ with /upload/pg_X/
-  // Replace .pdf with .jpg
-  let pageUrl = currentPdfUrl.replace(
-    "/upload/",
-    `/upload/pg_${currentPdfPage}/`
-  );
-  pageUrl = pageUrl.substr(0, pageUrl.lastIndexOf(".")) + ".jpg";
-
-  contentDiv.innerHTML = `
-        <div style="display:flex; flex-direction:column; align-items:center; height:100%;">
-            <!-- Image Display -->
-            <div style="flex:1; overflow:auto; width:100%; display:flex; justify-content:center; align-items:flex-start;">
-                <img id="pdfPageImg" src="${pageUrl}" style="max-width:100%; height:auto; box-shadow:0 4px 10px rgba(0,0,0,0.3);" 
-                     onerror="handlePdfError(this)">
+    contentDiv.innerHTML = `
+        <div style="display:flex; flex-direction:column; align-items:center; height:100%; background:#f0f0f0;">
+            
+            <!-- Controls (Top) -->
+            <div style="background:#333; width:100%; padding:10px; display:flex; justify-content:center; gap:20px; align-items:center; color:white; flex-shrink:0;">
+                
+                <!-- Prev Button -->
+                <button onclick="changePage(-1)" id="btnPrev" 
+                    style="background:#555; color:white; border:none; width:40px; height:30px; border-radius:5px; cursor:pointer; font-size:18px; opacity: ${currentPdfPage === 1 ? '0.5' : '1'};" 
+                    ${currentPdfPage === 1 ? 'disabled' : ''}>❮</button>
+                
+                <span style="font-weight:bold;">Page ${currentPdfPage}</span>
+                
+                <!-- Next Button (Initially Disabled, checked by JS) -->
+                <button onclick="changePage(1)" id="btnNext" 
+                    style="background:#555; color:white; border:none; width:40px; height:30px; border-radius:5px; cursor:not-allowed; font-size:18px; opacity: 0.5;" 
+                    disabled>❯</button>
             </div>
 
-            <!-- Controls -->
-            <div style="background:#333; width:100%; padding:15px; display:flex; justify-content:center; gap:20px; align-items:center; color:white;">
-                <button onclick="changePage(-1)" class="icon-btn" style="background:#555; width:40px;">❮</button>
-                <span>Page ${currentPdfPage}</span>
-                <button onclick="changePage(1)" class="icon-btn" style="background:#555; width:40px;">❯</button>
-                
-                <a href="${currentPdfUrl}" target="_blank" style="margin-left:20px; color:#4F46E5; text-decoration:none; font-size:12px;">
-                    <i class="fas fa-download"></i> Original
+            <!-- Image Display -->
+            <div style="flex:1; overflow:auto; width:100%; display:flex; justify-content:center; padding:10px;">
+                <img id="pdfPageImg" src="${pageUrl}" style="max-width:100%; height:auto; object-fit:contain; box-shadow:0 4px 10px rgba(0,0,0,0.2);" 
+                     onerror="handlePdfError(this)">
+            </div>
+            
+            <!-- Download Original -->
+            <div style="padding:10px; text-align:center;">
+                 <a href="javascript:void(0)" onclick="downloadFile('${currentPdfUrl}')" style="color:#4F46E5; text-decoration:none; font-size:14px; font-weight:bold;">
+                    <i class="fas fa-download"></i> Download Full PDF
                 </a>
             </div>
         </div>
     `;
+
+    // *** MAGIC TRICK: Check if next page exists ***
+    checkNextPageExists(currentPdfPage + 1);
+}
+
+function checkNextPageExists(nextPageNum) {
+    let testUrl = currentPdfUrl;
+    if (testUrl.includes('/upload/')) {
+        testUrl = testUrl.replace('/upload/', `/upload/pg_${nextPageNum}/`);
+    }
+    if (testUrl.toLowerCase().endsWith('.pdf')) {
+        testUrl = testUrl.substr(0, testUrl.lastIndexOf(".")) + ".jpg";
+    }
+
+    // နောက်ကွယ်မှာ Image ကို လှမ်းဆွဲကြည့်တယ်
+    const img = new Image();
+    img.onload = function() {
+        // ပုံရှိတယ်ဆိုရင် Next Button ကို ဖွင့်ပေးမယ်
+        const btnNext = document.getElementById('btnNext');
+        if (btnNext) {
+            btnNext.disabled = false;
+            btnNext.style.opacity = '1';
+            btnNext.style.cursor = 'pointer';
+            btnNext.style.background = '#2563EB'; // Blue color to indicate active
+        }
+    };
+    img.onerror = function() {
+        // ပုံမရှိဘူး (စာမျက်နှာကုန်ပြီ) ဆိုရင် Next Button ပိတ်ထားမြဲ ပိတ်ထားမယ်
+        // ဘာမှလုပ်စရာမလို (Already disabled in HTML)
+    };
+    img.src = testUrl;
 }
 
 function changePage(delta) {
-  if (currentPdfPage + delta < 1) return;
-  currentPdfPage += delta;
-  renderPdfPage();
+    if (currentPdfPage + delta < 1) return;
+    currentPdfPage += delta;
+    renderPdfPage();
 }
 
 function handlePdfError(img) {
-  // If image fails to load, it likely means we reached past the last page
-  if (currentPdfPage > 1) {
-    currentPdfPage--; // Go back
-    alert("End of document reached.");
-    renderPdfPage();
-  } else {
-    // Only 1 page or error loading page 1
-    img.parentNode.innerHTML = `<div style="color:#ccc; padding:20px;">Preview loading... or not available.<br><br> <a href="${currentPdfUrl}" target="_blank" style="color:#4F46E5;">Download PDF</a></div>`;
-  }
+    // ပုံမှန်အားဖြင့် ဒီ Error က မတက်တော့ပါဘူး (Next button ပိတ်ထားလို့)
+    // ဒါပေမယ့် တက်ခဲ့ရင်တောင် Alert မပြတော့ဘဲ စာတန်းပဲ ပြပါမယ်
+    img.parentNode.innerHTML = `<div style="text-align:center; padding:20px; color:red;">Cannot load page.<br><br> <button onclick="downloadFile('${currentPdfUrl}')">Download PDF</button></div>`;
 }
 
 function closeViewModal() {
-  document.getElementById("viewModal").style.display = "none";
-  document.getElementById("viewContent").innerHTML = "";
+    document.getElementById('viewModal').style.display = 'none';
+    document.getElementById('viewContent').innerHTML = '';
 }
 
 // --- SAVE & UPLOAD (Multiple Files Supported) ---
