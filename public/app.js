@@ -192,12 +192,15 @@ function renderView() {
   const folderStatus = document.getElementById("folderStatus");
   grid.innerHTML = "";
 
+  // Filter by Category first
   let docs =
     currentCategory === "all"
       ? allDocsCache
       : allDocsCache.filter((d) => d.category === currentCategory);
 
+  // --- VIEW LOGIC ---
   if (currentFolder) {
+    // 1. INSIDE A FOLDER
     backBtn.style.display = "flex";
     folderStatus.style.display = "block";
     document.getElementById("catName").textContent =
@@ -205,25 +208,36 @@ function renderView() {
     document.getElementById("folderNameDisplay").textContent = currentFolder;
 
     const folderDocs = docs.filter((d) => d.folder === currentFolder);
+
     if (folderDocs.length === 0)
       grid.innerHTML = '<p style="color:#888;">Empty folder.</p>';
     else folderDocs.forEach((d) => grid.appendChild(createFileCard(d)));
   } else {
+    // 2. ROOT CATEGORY VIEW
     backBtn.style.display = "none";
     folderStatus.style.display = "none";
 
     const folders = [...new Set(docs.map((d) => d.folder).filter((f) => f))];
 
     folders.forEach((folderName) => {
+      // *NEW*: Find the category of the first file in this folder to determine color
+      const sampleDoc = docs.find((d) => d.folder === folderName);
+      const catClass = sampleDoc ? sampleDoc.category : "other";
+
       const fCard = document.createElement("div");
-      fCard.className = "folder-card";
+      fCard.className = `folder-card ${catClass}`; // Add category class here
       fCard.onclick = () => openFolder(folderName);
+
+      // Icon mapping based on category (Optional, or just use generic folder)
+      let iconClass = "fa-folder";
+      // if(catClass === 'medical') iconClass = 'fa-folder-plus'; // Example
+
       fCard.innerHTML = `
-                <i class="fas fa-folder folder-icon"></i>
+                <i class="fas ${iconClass} folder-icon"></i>
                 <div class="folder-name">${folderName}</div>
-                <small style="color:#888;">${
+                <div class="folder-count">${
                   docs.filter((d) => d.folder === folderName).length
-                } files</small>
+                } files</div>
             `;
       grid.appendChild(fCard);
     });
@@ -232,7 +246,8 @@ function renderView() {
     looseFiles.forEach((d) => grid.appendChild(createFileCard(d)));
 
     if (folders.length === 0 && looseFiles.length === 0) {
-      grid.innerHTML = '<p style="color:#888;">No documents found.</p>';
+      grid.innerHTML =
+        '<div style="grid-column: 1/-1; text-align: center; margin-top: 50px; color: #9ca3af;"><i class="fas fa-box-open fa-3x"></i><p style="margin-top:10px;">No documents found.</p></div>';
     }
   }
 }
@@ -258,41 +273,31 @@ function createFileCard(data) {
     previewHtml = `<i class="fas fa-file-alt"></i>`;
   }
 
+  // CSS class for badge color
+  const catBadgeClass = `badge-${data.category}`; 
+
   div.innerHTML = `
     <div class="card-actions">
-        <!-- Download Button (Title ပါ ထည့်ပေးလိုက်သည်) -->
-        <button class="action-btn btn-download" title="Download" onclick="event.stopPropagation(); downloadFile('${
-          data.url
-        }', '${data.title.replace(/'/g, "\\'")}')">
+        <button class="action-btn btn-download" title="Download" onclick="event.stopPropagation(); downloadFile('${data.url}', '${data.title.replace(/'/g, "\\'")}')">
             <i class="fas fa-download"></i>
         </button>
         
-        <!-- Edit & Delete buttons remain same... -->
-        <button class="action-btn btn-edit" title="Edit" onclick="event.stopPropagation(); openEditModal('${
-          data.id
-        }', '${data.title}', '${data.category}', '${data.folder || ""}')">
+        <button class="action-btn btn-edit" title="Edit" onclick="event.stopPropagation(); openEditModal('${data.id}', '${data.title}', '${data.category}', '${data.folder || ""}')">
             <i class="fas fa-pen"></i>
         </button>
-        <button class="action-btn btn-delete" title="Delete" onclick="event.stopPropagation(); deleteDocument('${
-          data.id
-        }')">
+        <button class="action-btn btn-delete" title="Delete" onclick="event.stopPropagation(); deleteDocument('${data.id}')">
             <i class="fas fa-trash"></i>
         </button>
     </div>
     
-    <!-- View Click Area remains same... -->
-    <div onclick="viewFile('${data.url}', '${fileType}', '${data.title.replace(
-    /'/g,
-    "\\'"
-  )}')" style="cursor: pointer;">
+    <div onclick="viewFile('${data.url}', '${fileType}', '${data.title.replace(/'/g, "\\'")}')" style="cursor: pointer;">
         <div class="preview-box">${previewHtml}</div>
         <div class="card-info">
             <div class="card-title">${data.title}</div>
             <div class="card-meta">
                 <span>${data.date}</span>
-                <span style="font-size:0.7rem; background:#eee; padding:2px 6px; border-radius:4px;">${
-                  data.category
-                }</span>
+                <!-- ပြင်ဆင်ထားသောနေရာ (inline style ဖယ်လိုက်သည်) -->
+                <span class="cat-badge ${catBadgeClass}">${data.category}</span>
             </div>
         </div>
     </div>
@@ -302,15 +307,15 @@ function createFileCard(data) {
 
 // --- DOWNLOAD FUNCTION (Final Fix - Clean URL) ---
 function downloadFile(url, filename) {
-    // 1. URL ကို သန့်ရှင်းရေးလုပ်မယ် (Error တက်စေတဲ့ fl_attachment ကို ဖယ်မယ်)
-    let cleanUrl = url.replace('/fl_attachment', '');
+  // 1. URL ကို သန့်ရှင်းရေးလုပ်မယ် (Error တက်စေတဲ့ fl_attachment ကို ဖယ်မယ်)
+  let cleanUrl = url.replace("/fl_attachment", "");
 
-    // 2. Debugging (စစ်ဆေးရန်)
-    console.log("Opening URL:", cleanUrl);
+  // 2. Debugging (စစ်ဆေးရန်)
+  console.log("Opening URL:", cleanUrl);
 
-    // 3. Tab အသစ်မှာ ဖွင့်မယ် (ဒါဆိုရင် Browser က Download လုပ်မလား View မလား ဆုံးဖြတ်ပါလိမ့်မယ်)
-    // Cloudinary 401 Error မတက်တော့ပါဘူး
-    window.open(cleanUrl, '_blank');
+  // 3. Tab အသစ်မှာ ဖွင့်မယ် (ဒါဆိုရင် Browser က Download လုပ်မလား View မလား ဆုံးဖြတ်ပါလိမ့်မယ်)
+  // Cloudinary 401 Error မတက်တော့ပါဘူး
+  window.open(cleanUrl, "_blank");
 }
 
 // --- VIEW FILE FUNCTION (Cloudinary Image Mode) ---
@@ -318,55 +323,60 @@ let currentPdfPage = 1;
 let currentPdfUrl = "";
 
 function viewFile(url, type, title) {
-    const modal = document.getElementById('viewModal');
-    const contentDiv = document.getElementById('viewContent');
-    const titleEl = document.getElementById('viewTitle'); // Ensure this ID exists in HTML
+  const modal = document.getElementById("viewModal");
+  const contentDiv = document.getElementById("viewContent");
+  const titleEl = document.getElementById("viewTitle"); // Ensure this ID exists in HTML
 
-    // Reset
-    contentDiv.innerHTML = '';
-    // If you don't have viewTitle in HTML, remove the next line
-    if(document.getElementById('viewTitle')) document.getElementById('viewTitle').textContent = title || "Document Viewer";
-    
-    modal.style.display = 'flex';
-    
-    // Store global vars for pagination
-    currentPdfPage = 1;
-    currentPdfUrl = url;
+  // Reset
+  contentDiv.innerHTML = "";
+  // If you don't have viewTitle in HTML, remove the next line
+  if (document.getElementById("viewTitle"))
+    document.getElementById("viewTitle").textContent =
+      title || "Document Viewer";
 
-    // --- 1. IMAGE ---
-    if (type.startsWith('image/')) {
-        contentDiv.innerHTML = `<img src="${url}" style="max-width: 100%; height: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">`;
-        return;
+  modal.style.display = "flex";
+
+  // Store global vars for pagination
+  currentPdfPage = 1;
+  currentPdfUrl = url;
+
+  // --- 1. IMAGE ---
+  if (type.startsWith("image/")) {
+    contentDiv.innerHTML = `<img src="${url}" style="max-width: 100%; height: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.5);">`;
+    return;
+  }
+
+  // --- 2. PDF (Cloudinary Page-by-Page View) ---
+  if (type.includes("pdf")) {
+    // Check if it's Cloudinary
+    if (!url.includes("cloudinary.com")) {
+      // Fallback for non-cloudinary
+      contentDiv.innerHTML = `<div style="padding:20px; text-align:center;"><p>Preview not available for this PDF type.</p><button onclick="downloadFile('${url}')" style="background:#4F46E5; color:white; padding:10px; border:none; border-radius:5px;">Download PDF</button></div>`;
+      return;
     }
 
-    // --- 2. PDF (Cloudinary Page-by-Page View) ---
-    if (type.includes('pdf')) {
-        // Check if it's Cloudinary
-        if (!url.includes('cloudinary.com')) {
-            // Fallback for non-cloudinary
-            contentDiv.innerHTML = `<div style="padding:20px; text-align:center;"><p>Preview not available for this PDF type.</p><button onclick="downloadFile('${url}')" style="background:#4F46E5; color:white; padding:10px; border:none; border-radius:5px;">Download PDF</button></div>`;
-            return;
-        }
+    renderPdfPage();
+    return;
+  }
 
-        renderPdfPage();
-        return;
-    }
-
-    // --- 3. VIDEO ---
-    if (type.startsWith('video/')) {
-        contentDiv.innerHTML = `
+  // --- 3. VIDEO ---
+  if (type.startsWith("video/")) {
+    contentDiv.innerHTML = `
             <video controls style="max-width: 100%; max-height: 100%;">
                 <source src="${url}" type="${type}">
                 Your browser does not support video.
             </video>`;
-        return;
-    }
+    return;
+  }
 
-    // --- 4. OTHER ---
-    contentDiv.innerHTML = `
+  // --- 4. OTHER ---
+  contentDiv.innerHTML = `
         <div style="color:#333; padding:20px; text-align:center;">
             <i class="fas fa-file-download fa-3x"></i><br><br>
-            <button onclick="downloadFile('${url}', '${title.replace(/'/g, "\\'")}')" style="background:#4F46E5; color:white; padding:10px 20px; text-decoration:none; border:none; border-radius:5px; cursor:pointer;">
+            <button onclick="downloadFile('${url}', '${title.replace(
+    /'/g,
+    "\\'"
+  )}')" style="background:#4F46E5; color:white; padding:10px 20px; text-decoration:none; border:none; border-radius:5px; cursor:pointer;">
                 Download File
             </button>
         </div>`;
@@ -374,18 +384,18 @@ function viewFile(url, type, title) {
 
 // Helper to render PDF pages as Images
 function renderPdfPage() {
-    const contentDiv = document.getElementById('viewContent');
-    
-    // Construct Current Page URL
-    let pageUrl = currentPdfUrl;
-    if (pageUrl.includes('/upload/')) {
-        pageUrl = pageUrl.replace('/upload/', `/upload/pg_${currentPdfPage}/`);
-    }
-    if (pageUrl.toLowerCase().endsWith('.pdf')) {
-        pageUrl = pageUrl.substr(0, pageUrl.lastIndexOf(".")) + ".jpg";
-    }
+  const contentDiv = document.getElementById("viewContent");
 
-    contentDiv.innerHTML = `
+  // Construct Current Page URL
+  let pageUrl = currentPdfUrl;
+  if (pageUrl.includes("/upload/")) {
+    pageUrl = pageUrl.replace("/upload/", `/upload/pg_${currentPdfPage}/`);
+  }
+  if (pageUrl.toLowerCase().endsWith(".pdf")) {
+    pageUrl = pageUrl.substr(0, pageUrl.lastIndexOf(".")) + ".jpg";
+  }
+
+  contentDiv.innerHTML = `
         <div style="display:flex; flex-direction:column; align-items:center; height:100%; background:#f0f0f0;">
             
             <!-- Controls (Top) -->
@@ -393,8 +403,10 @@ function renderPdfPage() {
                 
                 <!-- Prev Button -->
                 <button onclick="changePage(-1)" id="btnPrev" 
-                    style="background:#555; color:white; border:none; width:40px; height:30px; border-radius:5px; cursor:pointer; font-size:18px; opacity: ${currentPdfPage === 1 ? '0.5' : '1'};" 
-                    ${currentPdfPage === 1 ? 'disabled' : ''}>❮</button>
+                    style="background:#555; color:white; border:none; width:40px; height:30px; border-radius:5px; cursor:pointer; font-size:18px; opacity: ${
+                      currentPdfPage === 1 ? "0.5" : "1"
+                    };" 
+                    ${currentPdfPage === 1 ? "disabled" : ""}>❮</button>
                 
                 <span style="font-weight:bold;">Page ${currentPdfPage}</span>
                 
@@ -419,53 +431,53 @@ function renderPdfPage() {
         </div>
     `;
 
-    // *** MAGIC TRICK: Check if next page exists ***
-    checkNextPageExists(currentPdfPage + 1);
+  // *** MAGIC TRICK: Check if next page exists ***
+  checkNextPageExists(currentPdfPage + 1);
 }
 
 function checkNextPageExists(nextPageNum) {
-    let testUrl = currentPdfUrl;
-    if (testUrl.includes('/upload/')) {
-        testUrl = testUrl.replace('/upload/', `/upload/pg_${nextPageNum}/`);
-    }
-    if (testUrl.toLowerCase().endsWith('.pdf')) {
-        testUrl = testUrl.substr(0, testUrl.lastIndexOf(".")) + ".jpg";
-    }
+  let testUrl = currentPdfUrl;
+  if (testUrl.includes("/upload/")) {
+    testUrl = testUrl.replace("/upload/", `/upload/pg_${nextPageNum}/`);
+  }
+  if (testUrl.toLowerCase().endsWith(".pdf")) {
+    testUrl = testUrl.substr(0, testUrl.lastIndexOf(".")) + ".jpg";
+  }
 
-    // နောက်ကွယ်မှာ Image ကို လှမ်းဆွဲကြည့်တယ်
-    const img = new Image();
-    img.onload = function() {
-        // ပုံရှိတယ်ဆိုရင် Next Button ကို ဖွင့်ပေးမယ်
-        const btnNext = document.getElementById('btnNext');
-        if (btnNext) {
-            btnNext.disabled = false;
-            btnNext.style.opacity = '1';
-            btnNext.style.cursor = 'pointer';
-            btnNext.style.background = '#2563EB'; // Blue color to indicate active
-        }
-    };
-    img.onerror = function() {
-        // ပုံမရှိဘူး (စာမျက်နှာကုန်ပြီ) ဆိုရင် Next Button ပိတ်ထားမြဲ ပိတ်ထားမယ်
-        // ဘာမှလုပ်စရာမလို (Already disabled in HTML)
-    };
-    img.src = testUrl;
+  // နောက်ကွယ်မှာ Image ကို လှမ်းဆွဲကြည့်တယ်
+  const img = new Image();
+  img.onload = function () {
+    // ပုံရှိတယ်ဆိုရင် Next Button ကို ဖွင့်ပေးမယ်
+    const btnNext = document.getElementById("btnNext");
+    if (btnNext) {
+      btnNext.disabled = false;
+      btnNext.style.opacity = "1";
+      btnNext.style.cursor = "pointer";
+      btnNext.style.background = "#2563EB"; // Blue color to indicate active
+    }
+  };
+  img.onerror = function () {
+    // ပုံမရှိဘူး (စာမျက်နှာကုန်ပြီ) ဆိုရင် Next Button ပိတ်ထားမြဲ ပိတ်ထားမယ်
+    // ဘာမှလုပ်စရာမလို (Already disabled in HTML)
+  };
+  img.src = testUrl;
 }
 
 function changePage(delta) {
-    if (currentPdfPage + delta < 1) return;
-    currentPdfPage += delta;
-    renderPdfPage();
+  if (currentPdfPage + delta < 1) return;
+  currentPdfPage += delta;
+  renderPdfPage();
 }
 
 function handlePdfError(img) {
-    // ပုံမှန်အားဖြင့် ဒီ Error က မတက်တော့ပါဘူး (Next button ပိတ်ထားလို့)
-    // ဒါပေမယ့် တက်ခဲ့ရင်တောင် Alert မပြတော့ဘဲ စာတန်းပဲ ပြပါမယ်
-    img.parentNode.innerHTML = `<div style="text-align:center; padding:20px; color:red;">Cannot load page.<br><br> <button onclick="downloadFile('${currentPdfUrl}')">Download PDF</button></div>`;
+  // ပုံမှန်အားဖြင့် ဒီ Error က မတက်တော့ပါဘူး (Next button ပိတ်ထားလို့)
+  // ဒါပေမယ့် တက်ခဲ့ရင်တောင် Alert မပြတော့ဘဲ စာတန်းပဲ ပြပါမယ်
+  img.parentNode.innerHTML = `<div style="text-align:center; padding:20px; color:red;">Cannot load page.<br><br> <button onclick="downloadFile('${currentPdfUrl}')">Download PDF</button></div>`;
 }
 
 function closeViewModal() {
-    document.getElementById('viewModal').style.display = 'none';
-    document.getElementById('viewContent').innerHTML = '';
+  document.getElementById("viewModal").style.display = "none";
+  document.getElementById("viewContent").innerHTML = "";
 }
 
 // --- SAVE & UPLOAD (Multiple Files Supported) ---

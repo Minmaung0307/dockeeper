@@ -3,7 +3,30 @@
   --bg: #f3f4f6;
   --sidebar-bg: #ffffff;
   --text: #1f2937;
+
+  /* Category Colors */
+  --c-housing: #2563eb;
+  --bg-housing: #eff6ff;
+  --c-travel: #0ea5e9;
+  --bg-travel: #e0f2fe;
+  --c-id: #7c3aed;
+  --bg-id: #f5f3ff;
+  --c-tax: #059669;
+  --bg-tax: #ecfdf5;
+  --c-medical: #dc2626;
+  --bg-medical: #fef2f2;
+  --c-auto: #d97706;
+  --bg-auto: #fffbeb;
+  --c-media: #db2777;
+  --bg-media: #fce7f3;
+  --c-business: #4b5563;
+  --bg-business: #f3f4f6;
+  --c-education: #9333ea;
+  --bg-education: #faf5ff;
+  --c-other: #6b7280;
+  --bg-other: #f9fafb;
 }
+
 body {
   font-family: "Segoe UI", sans-serif;
   margin: 0;
@@ -25,18 +48,24 @@ body {
 .auth-box {
   background: white;
   padding: 40px;
-  border-radius: 15px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
 }
 .btn-google {
   background: #db4437;
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
   margin-top: 20px;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(219, 68, 55, 0.3);
+  transition: transform 0.2s;
+}
+.btn-google:active {
+  transform: scale(0.95);
 }
 
 /* Layout */
@@ -45,7 +74,7 @@ body {
   height: 100vh;
 }
 .sidebar {
-  width: 250px;
+  width: 260px;
   background: var(--sidebar-bg);
   display: flex;
   flex-direction: column;
@@ -53,49 +82,124 @@ body {
   flex-shrink: 0;
 }
 .logo {
-  padding: 20px;
-  font-size: 1.5rem;
-  font-weight: bold;
+  padding: 25px;
+  font-size: 1.6rem;
+  font-weight: 800;
   color: var(--primary);
-  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+
+/* --- COLORFUL SIDEBAR --- */
 .nav-links {
   list-style: none;
-  padding: 20px 10px;
+  padding: 10px 15px;
   margin: 0;
   flex: 1;
   overflow-y: auto;
 }
 .nav-links li {
   padding: 12px 15px;
-  margin-bottom: 5px;
-  border-radius: 8px;
+  margin-bottom: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  color: #4b5563;
-  transition: 0.2s;
-}
-.nav-links li:hover,
-.nav-links li.active {
-  background: #eef2ff;
-  color: var(--primary);
+  color: #6b7280;
   font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
 }
 .nav-links li i {
-  margin-right: 10px;
-  width: 20px;
+  margin-right: 12px;
+  font-size: 1.1rem;
+  width: 24px;
   text-align: center;
+  transition: color 0.2s;
 }
+
+/* Default Hover */
+.nav-links li:hover {
+  background: #f3f4f6;
+  color: #111827;
+  transform: translateX(5px);
+}
+
+/* Active & Color States */
+/* All Files */
+#nav-all.active {
+  background: #eef2ff;
+  color: var(--primary);
+}
+/* Categories */
+#nav-housing.active,
+#nav-housing:hover {
+  background: var(--bg-housing);
+  color: var(--c-housing);
+}
+#nav-travel.active,
+#nav-travel:hover {
+  background: var(--bg-travel);
+  color: var(--c-travel);
+}
+#nav-id.active,
+#nav-id:hover {
+  background: var(--bg-id);
+  color: var(--c-id);
+}
+#nav-tax.active,
+#nav-tax:hover {
+  background: var(--bg-tax);
+  color: var(--c-tax);
+}
+#nav-medical.active,
+#nav-medical:hover {
+  background: var(--bg-medical);
+  color: var(--c-medical);
+}
+#nav-auto.active,
+#nav-auto:hover {
+  background: var(--bg-auto);
+  color: var(--c-auto);
+}
+#nav-media.active,
+#nav-media:hover {
+  background: var(--bg-media);
+  color: var(--c-media);
+}
+#nav-business.active,
+#nav-business:hover {
+  background: var(--bg-business);
+  color: var(--c-business);
+}
+#nav-education.active,
+#nav-education:hover {
+  background: var(--bg-education);
+  color: var(--c-education);
+}
+
+/* User Profile */
 .user-profile {
   padding: 20px;
   border-top: 1px solid #e5e7eb;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  background: #f9fafb;
 }
 #userPhoto {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.user-info {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 /* Content */
@@ -103,6 +207,7 @@ body {
   flex: 1;
   padding: 30px;
   overflow-y: auto;
+  background: #f8fafc;
 }
 header {
   display: flex;
@@ -115,142 +220,325 @@ header {
   align-items: center;
   gap: 15px;
 }
+#pageTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+}
+
+/* Search */
+.search-container {
+  flex: 1;
+  margin: 0 30px;
+  position: relative;
+  max-width: 500px;
+}
+.search-container input {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+.search-container input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 4px 20px rgba(79, 70, 229, 0.15);
+  outline: none;
+}
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
 .btn-add {
+  margin-left: 20px;
   background: var(--primary);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 15px 25px;
+  border-radius: 12px;
   cursor: pointer;
   font-weight: bold;
+  box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+  transition: transform 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
-.btn-back {
-  background: white;
-  border: 1px solid #ddd;
-  padding: 8px 15px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #555;
+.btn-add:hover {
+  transform: translateY(-2px);
 }
 
 /* Grid */
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  padding-bottom: 50px;
 }
 
-/* --- FOLDER CARD --- */
+/* --- COLORFUL FOLDER CARD --- */
 .folder-card {
-  background: #ffecb3; /* Folder Yellow */
-  border-radius: 12px;
+  background: white;
+  border-radius: 16px;
   padding: 20px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s;
-  border: 1px solid #ffe082;
-  height: 140px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s;
+  border: 1px solid transparent;
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+}
+.folder-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: #ddd; /* Default */
 }
 .folder-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
 }
+
+/* Category Specific Folder Styles */
+.folder-card.housing::before {
+  background: var(--c-housing);
+}
+.folder-card.housing .folder-icon {
+  color: var(--c-housing);
+}
+.folder-card.housing {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-housing) 100%);
+}
+
+.folder-card.travel::before {
+  background: var(--c-travel);
+}
+.folder-card.travel .folder-icon {
+  color: var(--c-travel);
+}
+.folder-card.travel {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-travel) 100%);
+}
+
+.folder-card.id::before {
+  background: var(--c-id);
+}
+.folder-card.id .folder-icon {
+  color: var(--c-id);
+}
+.folder-card.id {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-id) 100%);
+}
+
+.folder-card.tax::before {
+  background: var(--c-tax);
+}
+.folder-card.tax .folder-icon {
+  color: var(--c-tax);
+}
+.folder-card.tax {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-tax) 100%);
+}
+
+.folder-card.medical::before {
+  background: var(--c-medical);
+}
+.folder-card.medical .folder-icon {
+  color: var(--c-medical);
+}
+.folder-card.medical {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-medical) 100%);
+}
+
+.folder-card.auto::before {
+  background: var(--c-auto);
+}
+.folder-card.auto .folder-icon {
+  color: var(--c-auto);
+}
+.folder-card.auto {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-auto) 100%);
+}
+
+.folder-card.media::before {
+  background: var(--c-media);
+}
+.folder-card.media .folder-icon {
+  color: var(--c-media);
+}
+.folder-card.media {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-media) 100%);
+}
+
+.folder-card.education::before {
+  background: var(--c-education);
+}
+.folder-card.education .folder-icon {
+  color: var(--c-education);
+}
+.folder-card.education {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-education) 100%);
+}
+
+.folder-card.business::before {
+  background: var(--c-business);
+}
+.folder-card.business .folder-icon {
+  color: var(--c-business);
+}
+.folder-card.business {
+  background: linear-gradient(180deg, #fff 0%, var(--bg-business) 100%);
+}
+
 .folder-icon {
-  font-size: 3rem;
-  color: #ffb300;
-  margin-bottom: 10px;
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  transition: transform 0.2s;
+}
+.folder-card:hover .folder-icon {
+  transform: scale(1.1);
 }
 .folder-name {
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 1rem;
   text-align: center;
-  color: #5d4037;
+  color: #374151;
+}
+.folder-count {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 5px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 2px 8px;
+  border-radius: 10px;
 }
 
 /* --- FILE CARD --- */
 .file-card {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
   position: relative;
-  transition: transform 0.2s;
+  transition: all 0.2s;
+  border: 1px solid #f3f4f6;
 }
 .file-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
+
 .preview-box {
-  height: 130px;
-  background: #f3f4f6;
+  height: 150px;
+  background: #f9fafb;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
-  color: #9ca3af;
+  color: #cbd5e1;
+  position: relative;
 }
-.preview-box img,
-.preview-box video {
+.preview-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s;
 }
+.file-card:hover .preview-box img {
+  transform: scale(1.05);
+}
+
 .card-info {
-  padding: 10px;
+  padding: 15px;
 }
 .card-title {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1rem;
   margin-bottom: 5px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: #1f2937;
 }
 .card-meta {
   font-size: 0.75rem;
-  color: #6b7280;
+  color: #9ca3af;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
+.cat-badge {
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+/* Badge Colors */
+.badge-housing {
+  background: var(--bg-housing);
+  color: var(--c-housing);
+}
+.badge-medical {
+  background: var(--bg-medical);
+  color: var(--c-medical);
+}
+.badge-tax {
+  background: var(--bg-tax);
+  color: var(--c-tax);
+}
+/* Add others as needed, default fallback */
+.badge-other {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
 .card-actions {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 10px;
+  right: 10px;
   display: flex;
-  gap: 5px;
-  z-index: 5; /* Preview ပေါ်မရောက်အောင် */
+  gap: 6px;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
+.file-card:hover .card-actions {
+  opacity: 1;
+} /* Show on hover */
 .action-btn {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid #ddd; /* နယ်နိမိတ်လေး ထည့်လိုက်တယ် */
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
+  background: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: 0.2s;
-  font-size: 12px;
   color: #555;
 }
-/* Hover Colors */
-.btn-download:hover {
-  color: #059669;
-  background: #ecfdf5;
-} /* Green */
-.btn-edit:hover {
-  color: #4f46e5;
-  background: #eef2ff;
-} /* Blue */
-.btn-delete:hover {
-  color: #dc2626;
-  background: #fef2f2;
-} /* Red */
 
-/* Modal */
+/* Modals */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -258,207 +546,115 @@ header {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
   justify-content: center;
   align-items: center;
   z-index: 1000;
 }
 .modal-box {
   background: white;
-  padding: 25px;
-  border-radius: 15px;
+  padding: 30px;
+  border-radius: 20px;
   width: 90%;
-  max-width: 400px;
+  max-width: 450px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 }
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: 500;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #374151;
 }
 .form-group input,
 .form-group select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
   box-sizing: border-box;
+  font-size: 1rem;
+  transition: border-color 0.2s;
 }
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-.btn-save {
-  background: var(--primary);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.btn-cancel {
-  background: #e5e7eb;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--primary);
+  outline: none;
+  ring: 2px solid var(--primary);
 }
 
-/* Help Button Style (Desktop) */
-.nav-help {
-  margin-top: 20px; /* Desktop မှာ အောက်ချမယ် */
-  color: #4f46e5 !important;
+/* 1. Footer Logout Button (Desktop) */
+.logout-text-btn {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px; /* Icon နဲ့ စာသားကြား အကွာအဝေး */
+    margin-top: 2px;
+    transition: color 0.2s;
+    font-weight: 600;
+}
+.logout-text-btn:hover {
+    color: #d32f2f;
+    text-decoration: underline;
 }
 
-/* Mobile Logout Icon (Default Hidden) */
-.mobile-logout-icon {
-  display: none;
-  background: none;
-  border: none;
-  color: #ff6b6b;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-/* Desktop မှာ ဒီခလုတ်ကို ဖျောက်ထားမယ် (အောက်က Profile မှာ ပါပြီးသားမို့လို့) */
-.mobile-logout {
-  display: none;
+/* 2. Mobile Logout Item (Default Hidden on Desktop) */
+.mobile-logout-item {
+    display: none !important; /* Desktop မှာ ဖျောက်ထားမယ် */
 }
 
 @media (max-width: 768px) {
   #appContainer {
     flex-direction: column;
   }
-
-  /* Sidebar Container */
   .sidebar {
     width: 100%;
     height: auto;
     border-right: none;
     border-bottom: 1px solid #ddd;
-    overflow: hidden; /* Scroll ကို nav-links မှာပဲ ပေးမယ် */
+    overflow-x: auto;
+    padding-bottom: 0;
   }
-
-  /* Logo & Logout Row */
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between; /* ဘယ်ညာခွဲမည် */
-    align-items: center;
-    padding-right: 20px; /* Logout button space */
-  }
-
-  .logo {
-    border-bottom: none;
-    padding: 15px 20px;
-  }
-
-  /* Show Logout Icon on Mobile */
-  .mobile-logout-icon {
-    display: block;
-  }
-
-  /* Nav Links (Horizontal Scroll) */
   .nav-links {
     display: flex;
-    padding: 5px 15px 10px 15px;
-    overflow-x: auto; /* ဘေးတိုက် Scroll ဆွဲလို့ရအောင် */
-    white-space: nowrap; /* စာကြောင်းမကျိုးအောင် */
-    gap: 5px; /* ခလုတ်တွေကြား ခွာမယ် */
+    padding: 10px;
+    gap: 10px;
   }
-
   .nav-links li {
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
+    white-space: nowrap;
+    margin: 0;
     padding: 8px 12px;
-    background: #fff;
-    border: 1px solid #eee; /* ခလုတ်ပုံစံဖြစ်အောင် */
+    background: white;
+    border: 1px solid #eee;
   }
-
-  .nav-links li.active {
-    background: #eef2ff;
-    border-color: #4f46e5;
-  }
-
-  /* Help Button Alignment Fix */
-  .nav-help {
-    margin-top: 0; /* Mobile မှာ Margin ဖျောက်လိုက်မယ် (တတန်းတည်းညီသွားမယ်) */
-  }
-
   .user-profile {
     display: none;
   }
   .main-content {
     padding: 15px;
   }
-}
-
-/* --- SEARCH BAR STYLES --- */
-.search-container {
-  flex: 1;
-  margin: 0 15px;
-  position: relative;
-  max-width: 400px;
-}
-
-.search-container input {
-  width: 100%;
-  padding: 10px 10px 10px 35px;
-  border: 1px solid #d1d5db;
-  border-radius: 20px;
-  outline: none;
-  transition: box-shadow 0.2s;
-}
-
-.search-container input:focus {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-}
-
-.search-icon {
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #9ca3af;
-}
-
-/* Mobile Responsive Tweaks */
-@media (max-width: 600px) {
-  header {
-    gap: 10px;
-  }
+  .file-card .card-actions {
+    opacity: 1;
+  } /* Always show actions on mobile */
   .hide-on-mobile {
     display: none;
   }
-  .search-container {
-    margin: 0;
-    max-width: 100%;
+  /* ဖုန်းမှာ Menu ထဲက Logout ကို ပြန်ဖော်မယ် */
+  .mobile-logout-item {
+    display: flex !important;
+    color: #ff6b6b !important;
+    background: #fff5f5;
+    border: 1px solid #ffcdd2;
   }
-  .btn-add {
-    padding: 10px; /* Icon only on mobile */
+
+  /* Logo အောက်က വര ပြန်ထည့်မယ် */
+  .logo {
+    border-bottom: 1px solid #eee;
   }
-}
-
-.preview-box img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top; /* PDF/Document တွေရဲ့ ထိပ်ပိုင်းကို ပြမယ် */
-}
-
-/* PDF Viewer အပြည့်ပေါ်စေရန် */
-#viewModal .modal-box {
-  height: 90vh; /* မျက်နှာပြင်အမြင့်ရဲ့ ၉၀% */
-  display: flex;
-  flex-direction: column;
-}
-
-#viewFrame {
-  flex: 1; /* ကျန်တဲ့နေရာအကုန်ယူမယ် */
-  width: 100%;
-  background: #f0f0f0; /* မပေါ်ခင် အဖြူရောင်အစား မီးခိုးရောင်ပြထားမယ် */
 }

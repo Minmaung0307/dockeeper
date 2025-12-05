@@ -19,7 +19,7 @@
     <!-- PWA Manifest -->
     <link rel="manifest" href="manifest.json" />
     <!-- <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965335.png"> -->
-     <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="icon" type="image/png" href="icons/icon-192.png" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
     <link rel="stylesheet" href="styles.css" />
@@ -57,16 +57,10 @@
     <!-- Main App -->
     <div id="appContainer" style="display: none">
       <nav class="sidebar">
-        <!-- Logo & Mobile Logout Row -->
-        <div class="sidebar-header">
-          <div class="logo">📂 DocKeeper</div>
-          <!-- Mobile Logout Icon (Logo ညာဘက်တွင်ပေါ်မည်) -->
-          <button onclick="logout()" class="mobile-logout-icon">
-            <i class="fas fa-sign-out-alt"></i>
-          </button>
-        </div>
+        <!-- 1. Header (Logo Only - Logout icon ဖယ်လိုက်ပါပြီ) -->
+        <div class="logo">📂 DocKeeper</div>
 
-        <!-- Navigation Links -->
+        <!-- 2. Navigation Links -->
         <ul class="nav-links">
           <li onclick="filterCategory('all')" class="active" id="nav-all">
             <i class="fas fa-th-large"></i> All Files
@@ -102,20 +96,26 @@
             <i class="fas fa-folder-open"></i> Other
           </li>
 
-          <!-- Help Button (Class added for alignment) -->
+          <!-- Help Button -->
           <li onclick="openHelpModal()" class="nav-help">
             <i class="fas fa-question-circle"></i> How to Use
           </li>
+
+          <!-- Mobile Only Logout (Desktop မှာ မပေါ်ဘူး၊ ဖုန်းမှာပဲ ပေါ်မယ်) -->
+          <li onclick="logout()" class="mobile-logout-item">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </li>
         </ul>
 
-        <!-- Desktop Profile (Hidden on Mobile) -->
+        <!-- 3. User Profile (Desktop Logout - Icon ထည့်လိုက်ပါပြီ) -->
         <div class="user-profile">
           <img id="userPhoto" src="" alt="User" />
           <div class="user-info">
             <span id="userName">User</span>
-            <small onclick="logout()" style="cursor: pointer; color: #ff6b6b"
-              >Logout</small
-            >
+            <!-- Icon + Text Logout Button -->
+            <div onclick="logout()" class="logout-text-btn">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
           </div>
         </div>
       </nav>
