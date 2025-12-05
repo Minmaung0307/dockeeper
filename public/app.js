@@ -35,8 +35,16 @@ if ("serviceWorker" in navigator) {
 
 // --- AUTH ---
 function signIn() {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider).catch((err) => alert(err.message));
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    // *** အသစ်ထပ်ထည့်ရမည့် အပိုင်း ***
+    // ဒါက အကောင့်ရွေးခိုင်းတဲ့ Box ကို အတင်းပေါ်လာအောင် လုပ်တာပါ
+    provider.setCustomParameters({
+        prompt: 'select_account'
+    });
+    // *********************************
+
+    auth.signInWithPopup(provider).catch((err) => alert(err.message));
 }
 function logout() {
   auth.signOut();
@@ -644,3 +652,11 @@ function updateFolderList() {
     list.appendChild(option);
   });
 }
+
+// --- DYNAMIC YEAR FOOTER ---
+document.addEventListener('DOMContentLoaded', () => {
+    const yearEl = document.getElementById('currentYear');
+    if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
+    }
+});

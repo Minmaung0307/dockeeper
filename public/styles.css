@@ -658,3 +658,55 @@ header {
     border-bottom: 1px solid #eee;
   }
 }
+
+/* --- BEAUTIFUL BACK BUTTON --- */
+.btn-back {
+    display: inline-flex;      /* Icon နဲ့ စာသား တစ်တန်းတည်းနေအောင် */
+    align-items: center;
+    gap: 8px;                  /* Icon နဲ့ စာသားကြား အကွာအဝေး */
+    
+    background-color: white;
+    color: #4B5563;            /* စာလုံးအရောင် (မီးခိုးရင့်) */
+    border: 1px solid #E5E7EB; /* ဘောင်ပါးပါးလေး */
+    
+    padding: 10px 20px;        /* အတွင်းဘက် အကွာအဝေး */
+    border-radius: 30px;       /* လုံးဝန်းသော ပုံစံ (Pill Shape) */
+    
+    font-size: 0.95rem;
+    font-weight: 700;          /* စာလုံးအထူ */
+    cursor: pointer;
+    
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* အရိပ်ပါးပါးလေး */
+    transition: all 0.2s ease; /* ချောမွေ့သော အပြောင်းအလဲ */
+}
+
+/* Mouse တင်လိုက်ရင် ဖြစ်မည့်ပုံစံ */
+.btn-back:hover {
+    background-color: #EEF2FF; /* နောက်ခံ အပြာနုရောင် */
+    color: var(--primary);     /* စာလုံး အပြာရောင် */
+    border-color: var(--primary); /* ဘောင် အပြာရောင် */
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15); /* အရိပ်ပိုထင်ရှားမယ် */
+    transform: translateX(-4px); /* ဘယ်ဘက်ကို နည်းနည်းရွေ့သွားမယ် (Back သွားမယ့်သဘော) */
+}
+
+/* နှိပ်လိုက်ရင် ဖြစ်မည့်ပုံစံ */
+.btn-back:active {
+    transform: translateX(-2px) scale(0.98); /* နည်းနည်းကျုံ့သွားမယ် */
+}
+
+/* Icon လေးကို နည်းနည်းကြီးမယ် */
+.btn-back i {
+    font-size: 1.1rem;
+}
+
+/* --- APP FOOTER --- */
+.app-footer {
+    text-align: center;
+    padding: 20px;
+    color: #9ca3af; /* မီးခိုးရောင်ဖျော့ဖျော့ */
+    font-size: 0.85rem;
+    margin-top: 30px;
+    border-top: 1px solid #e5e7eb; /* အပေါ်မှာ မျဉ်းပါးပါးလေး */
+    width: 100%;
+    font-weight: 500;
+}

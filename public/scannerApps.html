@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best Scanner Apps</title>
+    <link href="https://fonts.googleapis.com/css2?family=Padauk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --adobe-color: #3f51b5;  /* Indigo */
+            --lens-color: #d63031;   /* Red */
+            --vflat-color: #6c5ce7;  /* Purple */
+            --cam-color: #00b894;    /* Mint Green */
+            --builtin-color: #636e72; /* Slate Grey */
+            --genius-color: #e17055; /* Orange */
+            --bg-color: #f0f2f5;
+        }
+
+        body {
+            font-family: 'Padauk', 'Pyidaungsu', sans-serif;
+            background-color: var(--bg-color);
+            color: #444;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3436;
+            margin-bottom: 40px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Card Base Style */
+        .app-card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            padding: 25px;
+            border-left: 6px solid transparent; /* Will be overridden */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        /* Unique Colors per Card */
+        .card-adobe { border-left-color: var(--adobe-color); }
+        .card-adobe h2 { color: var(--adobe-color); }
+        .card-adobe .tag { background-color: #e8eaf6; color: var(--adobe-color); }
+
+        .card-lens { border-left-color: var(--lens-color); }
+        .card-lens h2 { color: var(--lens-color); }
+        /* ပြင်ဆင်ထားသောနေရာ */
+        .card-lens .tag { background-color: #ffebee; color: var(--lens-color); }
+
+        .card-vflat { border-left-color: var(--vflat-color); }
+        .card-vflat h2 { color: var(--vflat-color); }
+        .card-vflat .tag { background-color: #ede7f6; color: var(--vflat-color); }
+
+        .card-cam { border-left-color: var(--cam-color); }
+        .card-cam h2 { color: var(--cam-color); }
+        .card-cam .tag { background-color: #e0f2f1; color: var(--cam-color); }
+
+        .card-builtin { border-left-color: var(--builtin-color); }
+        .card-builtin h2 { color: var(--builtin-color); }
+        .card-builtin .tag { background-color: #eceff1; color: var(--builtin-color); }
+
+        .card-genius { border-left-color: var(--genius-color); }
+        .card-genius h2 { color: var(--genius-color); }
+        .card-genius .tag { background-color: #fbe9e7; color: var(--genius-color); }
+
+        /* Typography & Elements */
+        .app-card h2 {
+            margin-top: 0;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.65em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-left: auto; /* Pushes tag to the right */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 5px;
+        }
+
+        strong {
+            color: #2d3436;
+            font-weight: 700;
+        }
+
+        .platform {
+            display: inline-block;
+            background-color: #f1f2f6;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: #636e72;
+            margin-right: 5px;
+            border: 1px solid #dfe4ea;
+        }
+
+        /* Icon Description Box */
+        .icon-desc {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #ccc;
+            font-size: 0.9em;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        .icon-desc span {
+            margin-right: 8px;
+            font-size: 1.2em;
+        }
+
+        /* Built-in section specific tweaks */
+        .sub-section {
+            background-color: #fff;
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        .sub-section strong {
+            color: var(--builtin-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 600px) {
+            .app-card h2 {
+                font-size: 1.1em;
+            }
+            .tag {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📲 ဖုန်းများအတွက် အကောင်းဆုံး Scanner Apps</h1>
+
+    <!-- 1. Adobe Scan -->
+    <div class="app-card card-adobe">
+        <h2>၁။ Adobe Scan <span class="tag">အကောင်းဆုံး All-rounder</span></h2>
+        <ul>
+            <li><strong>အားသာချက်:</strong> စာရွက်စာတမ်းတွေကို အလိုအလျောက် ရှာဖွေပေးပြီး (Auto-detect) ဓာတ်ပုံရိုက်ရတာ မြန်ဆန်ပါတယ်။ OCR စနစ်ကောင်းမွန်ပြီး Adobe Cloud တွင် သိမ်းဆည်းပေးပါသည်။</li>
+            <li><strong>သင့်တော်သူ:</strong> ရုံးစာရွက်စာတမ်းတွေ၊ စာချုပ်တွေ မကြာခဏ Scan ဖတ်ရသူတွေအတွက် အထူးကောင်းမွန်ပါတယ်။</li>
+            <li><strong>Platform:</strong> <span class="platform">iOS</span> <span class="platform">Android</span></li>
+        </ul>
+        <div class="icon-desc">
+            <span>🟦</span> <strong>Icon ပုံစံ :</strong>&nbsp; အပြာရောင်ရင့်ရင့် နောက်ခံမှာ 'Adobe Scan' ဆိုတဲ့ စာသား (သို့) စာရွက်ပုံစံ အဖြူရောင်လေး ပါပါတယ်။
+        </div>
+    </div>
+
+    <!-- 2. Microsoft Lens -->
+    <div class="app-card card-lens">
+        <h2>၂။ Microsoft Lens <span class="tag">Office သမားတွေအတွက်</span></h2>
+        <ul>
+            <li><strong>အားသာချက်:</strong> Word, PowerPoint, Excel တို့နှင့် တိုက်ရိုက်ချိတ်ဆက်နိုင်သည်။ ဇယားကွက်များကို Excel ဖိုင်အဖြစ် တန်းပြောင်းလို့ရပြီး Whiteboard ရိုက်ကူးရာတွင် အထူးကောင်းမွန်သည်။</li>
+            <li><strong>သင့်တော်သူ:</strong> ကျောင်းသားတွေနဲ့ Microsoft Office ကို အဓိကထား အသုံးပြုသူတွေအတွက်ပါ။</li>
+            <li><strong>Platform:</strong> <span class="platform">iOS</span> <span class="platform">Android</span></li>
+        </ul>
+        <div class="icon-desc">
+            <span>🟥</span> <strong>Icon ပုံစံ :</strong>&nbsp; အနီရောင် (လိမ္မော်ဘက်သန်းသော) နောက်ခံမှာ ကင်မရာမှန်ဘီလူးပုံစံ 'L' အက္ခရာ အဖြူရောင်လေး ပါပါတယ်။
+        </div>
+    </div>
+
+    <!-- 3. vFlat Scan -->
+    <div class="app-card card-vflat">
+        <h2>၃။ vFlat Scan <span class="tag">စာအုပ် Scan ဖတ်ဖို့ အကောင်းဆုံး</span></h2>
+        <ul>
+            <li><strong>အားသာချက်:</strong> စာအုပ်စာမျက်နှာ ကွေးနေတာတွေကို ပြန်ဖြောင့်ပေးခြင်း (Flatten) နှင့် လက်ချောင်းများကို အလိုအလျောက် ဖျောက်ပေးနိုင်ခြင်း။</li>
+            <li><strong>သင့်တော်သူ:</strong> စာအုပ်တွေ၊ မဂ္ဂဇင်းတွေကို PDF ပြောင်းပြီး သိမ်းချင်သူတွေအတွက် မရှိမဖြစ်ပါ။</li>
+            <li><strong>Platform:</strong> <span class="platform">iOS</span> <span class="platform">Android</span></li>
+        </ul>
+        <div class="icon-desc">
+            <span>🟪</span> <strong>Icon ပုံစံ :</strong>&nbsp; ခရမ်းရောင် (သို့) အမည်းရောင် နောက်ခံမှာ စာအုပ်ဖွင့်ထားတဲ့ ပုံစံလေး ပါပါတယ်။
+        </div>
+    </div>
+
+    <!-- 4. CamScanner -->
+    <div class="app-card card-cam">
+        <h2>၄။ CamScanner <span class="tag">Features အစုံဆုံး</span></h2>
+        <ul>
+            <li><strong>အားသာချက်:</strong> အရမ်းနာမည်ကြီးပြီး Feature စုံလင်သည်။ ID ကဒ်တွေကို ရှေ့နောက်တစ်ရွက်တည်းဖြစ်အောင် စီပေးခြင်း၊ ပုံရိပ်ကို ကြည်လင်ပြတ်သားအောင် ပြုလုပ်ပေးခြင်းတို့ ကောင်းမွန်သည်။</li>
+            <li><strong>သတိပြုရန်:</strong> Free version မှာ "Scanned with CamScanner" Watermark ပါတတ်ပြီး ကြော်ငြာများပါသည်။</li>
+            <li><strong>Platform:</strong> <span class="platform">iOS</span> <span class="platform">Android</span></li>
+        </ul>
+        <div class="icon-desc">
+            <span>🟩</span> <strong>Icon ပုံစံ :</strong>&nbsp; အစိမ်းရောင်ရင့်ရင့် နောက်ခံမှာ 'CS' ဆိုတဲ့ အဖြူရောင် စာလုံးလေး ပါပါတယ်။
+        </div>
+    </div>
+
+    <!-- 5. Built-in Apps -->
+    <div class="app-card card-builtin">
+        <h2>၅။ Built-in Apps <span class="tag">App အသစ်မသွင်းလိုသူများ</span></h2>
+        
+        <div class="sub-section">
+            <strong>🍏 iOS (iPhone/iPad) အတွက်:</strong>
+            <p>Notes App ကို ဖွင့်ပါ။ Camera ပုံလေးကို နှိပ်ပြီး "Scan Documents" ကို ရွေးလိုက်ပါ။</p>
+        </div>
+
+        <div class="sub-section">
+            <strong>🤖 Android အတွက်:</strong>
+            <p>Google Drive ကို ဖွင့်ပါ။ '+' (New) ခလုတ်ကို နှိပ်ပြီး "Scan" ကို ရွေးလိုက်ပါ။</p>
+        </div>
+        <div class="icon-desc">
+            <span>📝</span> <strong>Icon ပုံစံ :</strong>&nbsp; Notes App (အဝါရောင် စာရွက်) / Drive (တြိဂံပုံ)။
+        </div>
+    </div>
+
+    <!-- 6. Genius Scan -->
+    <div class="app-card card-genius">
+        <h2>၆။ Genius Scan <span class="tag">ပေါ့ပါးမြန်ဆန်</span></h2>
+        <ul>
+            <li><strong>အားသာချက်:</strong> အကောင့်ဖွင့်စရာမလိုဘဲ လုံခြုံမှု (Privacy) ရှိသည်။ App သည် အလွန်ပေါ့ပါးပြီး PDF ဖိုင်ဆိုဒ်သေးအောင် ချုံ့ပေးနိုင်သည်။</li>
+            <li><strong>သင့်တော်သူ:</strong> ရိုးရှင်းမြန်ဆန်တာကို လိုချင်သူများနဲ့ ဖုန်း Storage နည်းသူများ။</li>
+            <li><strong>Platform:</strong> <span class="platform">iOS</span> <span class="platform">Android</span></li>
+        </ul>
+        <div class="icon-desc">
+            <span>🟧</span> <strong>Icon ပုံစံ :</strong>&nbsp; လိမ္မော်ရောင် နောက်ခံမှာ အဖြူရောင် ကင်မရာရှပ်တာ (Shutter) ပုံလေးပါ။
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
