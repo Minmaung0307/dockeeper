@@ -589,24 +589,24 @@ header {
 
 /* 1. Footer Logout Button (Desktop) */
 .logout-text-btn {
-    color: #ff6b6b;
-    font-size: 0.85rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px; /* Icon နဲ့ စာသားကြား အကွာအဝေး */
-    margin-top: 2px;
-    transition: color 0.2s;
-    font-weight: 600;
+  color: #ff6b6b;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px; /* Icon နဲ့ စာသားကြား အကွာအဝေး */
+  margin-top: 2px;
+  transition: color 0.2s;
+  font-weight: 600;
 }
 .logout-text-btn:hover {
-    color: #d32f2f;
-    text-decoration: underline;
+  color: #d32f2f;
+  text-decoration: underline;
 }
 
 /* 2. Mobile Logout Item (Default Hidden on Desktop) */
 .mobile-logout-item {
-    display: none !important; /* Desktop မှာ ဖျောက်ထားမယ် */
+  display: none !important; /* Desktop မှာ ဖျောက်ထားမယ် */
 }
 
 @media (max-width: 768px) {
@@ -661,52 +661,121 @@ header {
 
 /* --- BEAUTIFUL BACK BUTTON --- */
 .btn-back {
-    display: inline-flex;      /* Icon နဲ့ စာသား တစ်တန်းတည်းနေအောင် */
-    align-items: center;
-    gap: 8px;                  /* Icon နဲ့ စာသားကြား အကွာအဝေး */
-    
-    background-color: white;
-    color: #4B5563;            /* စာလုံးအရောင် (မီးခိုးရင့်) */
-    border: 1px solid #E5E7EB; /* ဘောင်ပါးပါးလေး */
-    
-    padding: 10px 20px;        /* အတွင်းဘက် အကွာအဝေး */
-    border-radius: 30px;       /* လုံးဝန်းသော ပုံစံ (Pill Shape) */
-    
-    font-size: 0.95rem;
-    font-weight: 700;          /* စာလုံးအထူ */
-    cursor: pointer;
-    
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* အရိပ်ပါးပါးလေး */
-    transition: all 0.2s ease; /* ချောမွေ့သော အပြောင်းအလဲ */
+  display: inline-flex; /* Icon နဲ့ စာသား တစ်တန်းတည်းနေအောင် */
+  align-items: center;
+  gap: 8px; /* Icon နဲ့ စာသားကြား အကွာအဝေး */
+
+  background-color: white;
+  color: #4b5563; /* စာလုံးအရောင် (မီးခိုးရင့်) */
+  border: 1px solid #e5e7eb; /* ဘောင်ပါးပါးလေး */
+
+  padding: 10px 20px; /* အတွင်းဘက် အကွာအဝေး */
+  border-radius: 30px; /* လုံးဝန်းသော ပုံစံ (Pill Shape) */
+
+  font-size: 0.95rem;
+  font-weight: 700; /* စာလုံးအထူ */
+  cursor: pointer;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* အရိပ်ပါးပါးလေး */
+  transition: all 0.2s ease; /* ချောမွေ့သော အပြောင်းအလဲ */
 }
 
 /* Mouse တင်လိုက်ရင် ဖြစ်မည့်ပုံစံ */
 .btn-back:hover {
-    background-color: #EEF2FF; /* နောက်ခံ အပြာနုရောင် */
-    color: var(--primary);     /* စာလုံး အပြာရောင် */
-    border-color: var(--primary); /* ဘောင် အပြာရောင် */
-    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15); /* အရိပ်ပိုထင်ရှားမယ် */
-    transform: translateX(-4px); /* ဘယ်ဘက်ကို နည်းနည်းရွေ့သွားမယ် (Back သွားမယ့်သဘော) */
+  background-color: #eef2ff; /* နောက်ခံ အပြာနုရောင် */
+  color: var(--primary); /* စာလုံး အပြာရောင် */
+  border-color: var(--primary); /* ဘောင် အပြာရောင် */
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15); /* အရိပ်ပိုထင်ရှားမယ် */
+  transform: translateX(
+    -4px
+  ); /* ဘယ်ဘက်ကို နည်းနည်းရွေ့သွားမယ် (Back သွားမယ့်သဘော) */
 }
 
 /* နှိပ်လိုက်ရင် ဖြစ်မည့်ပုံစံ */
 .btn-back:active {
-    transform: translateX(-2px) scale(0.98); /* နည်းနည်းကျုံ့သွားမယ် */
+  transform: translateX(-2px) scale(0.98); /* နည်းနည်းကျုံ့သွားမယ် */
 }
 
 /* Icon လေးကို နည်းနည်းကြီးမယ် */
 .btn-back i {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 /* --- APP FOOTER --- */
 .app-footer {
-    text-align: center;
-    padding: 20px;
-    color: #9ca3af; /* မီးခိုးရောင်ဖျော့ဖျော့ */
-    font-size: 0.85rem;
-    margin-top: 30px;
-    border-top: 1px solid #e5e7eb; /* အပေါ်မှာ မျဉ်းပါးပါးလေး */
-    width: 100%;
-    font-weight: 500;
+  text-align: center;
+  padding: 20px;
+  color: #9ca3af; /* မီးခိုးရောင်ဖျော့ဖျော့ */
+  font-size: 0.85rem;
+  margin-top: 30px;
+  border-top: 1px solid #e5e7eb; /* အပေါ်မှာ မျဉ်းပါးပါးလေး */
+  width: 100%;
+  font-weight: 500;
+}
+
+/* --- PRICING UI --- */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.price-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 15px 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  background: white;
+}
+
+.price-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+  border-color: #2563eb;
+}
+
+.price-card h3 {
+  margin: 0 0 5px 0;
+  font-size: 1rem;
+  color: #555;
+}
+.price {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #2563eb;
+  margin-bottom: 5px;
+}
+
+/* Badges */
+.price-card.popular {
+  border: 2px solid #2563eb;
+  background: #f0f9ff;
+}
+.badge {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #2563eb;
+  color: white;
+  padding: 2px 8px;
+  font-size: 0.7rem;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.price-card.premium {
+  background: linear-gradient(135deg, #1e1e2f 0%, #2d2d44 100%);
+  border: none;
+  color: white;
+}
+.price-card.premium h3,
+.price-card.premium small {
+  color: #ccc;
+}
+.price-card.premium .price {
+  color: #ffd700;
 }
