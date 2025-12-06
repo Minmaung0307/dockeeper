@@ -35,16 +35,16 @@ if ("serviceWorker" in navigator) {
 
 // --- AUTH ---
 function signIn() {
-    const provider = new firebase.auth.GoogleAuthProvider();
+  const provider = new firebase.auth.GoogleAuthProvider();
 
-    // *** အသစ်ထပ်ထည့်ရမည့် အပိုင်း ***
-    // ဒါက အကောင့်ရွေးခိုင်းတဲ့ Box ကို အတင်းပေါ်လာအောင် လုပ်တာပါ
-    provider.setCustomParameters({
-        prompt: 'select_account'
-    });
-    // *********************************
+  // *** အသစ်ထပ်ထည့်ရမည့် အပိုင်း ***
+  // ဒါက အကောင့်ရွေးခိုင်းတဲ့ Box ကို အတင်းပေါ်လာအောင် လုပ်တာပါ
+  provider.setCustomParameters({
+    prompt: "select_account",
+  });
+  // *********************************
 
-    auth.signInWithPopup(provider).catch((err) => alert(err.message));
+  auth.signInWithPopup(provider).catch((err) => alert(err.message));
 }
 function logout() {
   auth.signOut();
@@ -282,23 +282,32 @@ function createFileCard(data) {
   }
 
   // CSS class for badge color
-  const catBadgeClass = `badge-${data.category}`; 
+  const catBadgeClass = `badge-${data.category}`;
 
   div.innerHTML = `
     <div class="card-actions">
-        <button class="action-btn btn-download" title="Download" onclick="event.stopPropagation(); downloadFile('${data.url}', '${data.title.replace(/'/g, "\\'")}')">
+        <button class="action-btn btn-download" title="Download" onclick="event.stopPropagation(); downloadFile('${
+          data.url
+        }', '${data.title.replace(/'/g, "\\'")}')">
             <i class="fas fa-download"></i>
         </button>
         
-        <button class="action-btn btn-edit" title="Edit" onclick="event.stopPropagation(); openEditModal('${data.id}', '${data.title}', '${data.category}', '${data.folder || ""}')">
+        <button class="action-btn btn-edit" title="Edit" onclick="event.stopPropagation(); openEditModal('${
+          data.id
+        }', '${data.title}', '${data.category}', '${data.folder || ""}')">
             <i class="fas fa-pen"></i>
         </button>
-        <button class="action-btn btn-delete" title="Delete" onclick="event.stopPropagation(); deleteDocument('${data.id}')">
+        <button class="action-btn btn-delete" title="Delete" onclick="event.stopPropagation(); deleteDocument('${
+          data.id
+        }')">
             <i class="fas fa-trash"></i>
         </button>
     </div>
     
-    <div onclick="viewFile('${data.url}', '${fileType}', '${data.title.replace(/'/g, "\\'")}')" style="cursor: pointer;">
+    <div onclick="viewFile('${data.url}', '${fileType}', '${data.title.replace(
+    /'/g,
+    "\\'"
+  )}')" style="cursor: pointer;">
         <div class="preview-box">${previewHtml}</div>
         <div class="card-info">
             <div class="card-title">${data.title}</div>
@@ -654,91 +663,9 @@ function updateFolderList() {
 }
 
 // --- DYNAMIC YEAR FOOTER ---
-document.addEventListener('DOMContentLoaded', () => {
-    const yearEl = document.getElementById('currentYear');
-    if (yearEl) {
-        yearEl.textContent = new Date().getFullYear();
-    }
+document.addEventListener("DOMContentLoaded", () => {
+  const yearEl = document.getElementById("currentYear");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
 });
-
-// --- PAYPAL PAYMENT LOGIC ---
-let selectedPlanDetails = {};
-
-function showPayPal(plan, price) {
-    // UI ပြောင်းမယ် (Pricing ဖျောက်, PayPal ပြ)
-    document.getElementById('pricingSection').style.display = 'none';
-    document.getElementById('paymentSection').style.display = 'block';
-    
-    document.getElementById('selectedPlanName').innerText = plan.replace('_', ' ').toUpperCase();
-    document.getElementById('selectedPlanPrice').innerText = `$${price}`;
-
-    // Clear old buttons
-    document.getElementById('paypal-button-container').innerHTML = '';
-
-    // Store plan info
-    selectedPlanDetails = { plan, price };
-
-    // Render PayPal Buttons
-    paypal.Buttons({
-        // ပိုက်ဆံပမာဏ သတ်မှတ်ခြင်း
-        createOrder: function(data, actions) {
-            return actions.order.create({
-                purchase_units: [{
-                    amount: { value: price.toString() },
-                    description: `Subscription: ${plan}`
-                }]
-            });
-        },
-        // ငွေချေပြီးသွားရင် လုပ်မည့်အလုပ်
-        onApprove: function(data, actions) {
-            return actions.order.capture().then(function(details) {
-                console.log('Transaction completed by ' + details.payer.name.given_name);
-                // Database မှာ ရက်တိုးပေးမယ်
-                activateSubscription(selectedPlanDetails.plan);
-            });
-        },
-        onError: function (err) {
-            alert("Payment Error: " + err);
-        }
-    }).render('#paypal-button-container');
-}
-
-function backToPlans() {
-    document.getElementById('pricingSection').style.display = 'grid';
-    document.getElementById('paymentSection').style.display = 'none';
-    document.getElementById('paypal-button-container').innerHTML = '';
-}
-
-// --- ACTIVATE SUBSCRIPTION (Update Database) ---
-async function activateSubscription(plan) {
-    document.body.style.cursor = 'wait';
-    
-    const now = new Date();
-    let newExpiry = new Date();
-
-    // ရက်တွက်ချက်ခြင်း
-    if (plan === '1_month') {
-        newExpiry.setMonth(now.getMonth() + 1);
-    } else if (plan === '1_year') {
-        newExpiry.setFullYear(now.getFullYear() + 1);
-    } else if (plan === '5_years') {
-        newExpiry.setFullYear(now.getFullYear() + 5);
-    } else if (plan === 'lifetime') {
-        newExpiry.setFullYear(now.getFullYear() + 100); // နှစ် ၁၀၀
-    }
-
-    // Firestore Update
-    try {
-        await db.collection('users').doc(currentUser.email).update({
-            expiry: newExpiry.toISOString(),
-            plan: plan,
-            lastPayment: now.toISOString()
-        });
-        
-        alert("Payment Successful! ✅\nThank you for subscribing.");
-        location.reload(); // App ကို ပြန်စမယ်
-    } catch (error) {
-        console.error("Activation Error:", error);
-        alert("Payment received but database update failed. Please contact admin with screenshot.");
-    }
-}

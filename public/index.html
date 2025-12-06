@@ -36,9 +36,6 @@
         "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
     </script>
 
-    <!-- PayPal -->
-    <script src="https://www.paypal.com/sdk/js?client-id=AaKZjB0uumFuwOSMM58Pq73mYo5NEr62au8q9591NzcWh0mrSC4-4oJhZa-Chl20eTVuek8icggJuSHY&currency=USD"></script>
-
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
@@ -359,81 +356,6 @@
           style="flex: 1; overflow-y: auto; text-align: center; padding: 10px"
         >
           <!-- PDF Pages or Image will appear here -->
-        </div>
-      </div>
-    </div>
-
-    <!-- SUBSCRIPTION / PAYMENT MODAL -->
-    <div
-      id="paywallModal"
-      class="modal-overlay"
-      style="z-index: 3000; background: rgba(0, 0, 0, 0.95)"
-    >
-      <div
-        class="modal-box"
-        style="max-width: 600px; width: 95%; text-align: center"
-      >
-        <h2 style="color: #2563eb">🚀 Upgrade Plan</h2>
-
-        <!-- 1. Pricing Grid (Plan ရွေးရန်) -->
-        <div id="pricingSection">
-          <p id="trialMsg" style="color: #555; margin-bottom: 20px">
-            Choose a plan to continue.
-          </p>
-          <div class="pricing-grid">
-            <!-- Monthly -->
-            <div class="price-card" onclick="showPayPal('1_month', 2.99)">
-              <h3>Monthly</h3>
-              <div class="price">$2.99</div>
-            </div>
-            <!-- 1 Year -->
-            <div
-              class="price-card popular"
-              onclick="showPayPal('1_year', 35.00)"
-            >
-              <div class="badge">Popular</div>
-              <h3>1 Year</h3>
-              <div class="price">$35.00</div>
-            </div>
-            <!-- 5 Years -->
-            <div class="price-card" onclick="showPayPal('5_years', 170.00)">
-              <h3>5 Years</h3>
-              <div class="price">$170.00</div>
-            </div>
-            <!-- Lifetime -->
-            <div
-              class="price-card premium"
-              onclick="showPayPal('lifetime', 250.00)"
-            >
-              <h3>Lifetime</h3>
-              <div class="price">$250.00</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 2. PayPal Section (ငွေချေရန် - မူလက ဖျောက်ထားမည်) -->
-        <div id="paymentSection" style="display: none; margin-top: 20px">
-          <h4 id="selectedPlanName">Selected Plan</h4>
-          <p style="margin-bottom: 20px">
-            Amount: <b id="selectedPlanPrice">$0.00</b>
-          </p>
-
-          <!-- PayPal Button Container -->
-          <div id="paypal-button-container"></div>
-
-          <button
-            onclick="backToPlans()"
-            style="
-              margin-top: 20px;
-              background: none;
-              border: none;
-              color: #666;
-              text-decoration: underline;
-              cursor: pointer;
-            "
-          >
-            ← Back to Plans
-          </button>
         </div>
       </div>
     </div>
